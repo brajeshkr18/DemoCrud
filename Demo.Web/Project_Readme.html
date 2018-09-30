@@ -1,151 +1,236 @@
-﻿<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8" />
-    <title>Your ASP.NET application</title>
-    <style>
-        body {
-            background: #fff;
-            color: #505050;
-            font: 14px 'Segoe UI', tahoma, arial, helvetica, sans-serif;
-            margin: 20px;
-            padding: 0;
-        }
+﻿USE [master]
+GO
+/****** Object:  Database [Demo]    Script Date: 30-09-2018 15:40:40 ******/
+CREATE DATABASE [Demo]
+ CONTAINMENT = NONE
+ ON  PRIMARY
+( NAME = N'Demo', FILENAME = N'C:\Program Files\Microsoft SQL Server\MSSQL11.MSSQLSERVER\MSSQL\DATA\Demo.mdf' , SIZE = 3136KB , MAXSIZE = UNLIMITED, FILEGROWTH = 1024KB )
+ LOG ON
+( NAME = N'Demo_log', FILENAME = N'C:\Program Files\Microsoft SQL Server\MSSQL11.MSSQLSERVER\MSSQL\DATA\Demo_log.ldf' , SIZE = 832KB , MAXSIZE = 2048GB , FILEGROWTH = 10%)
+GO
+ALTER DATABASE [Demo] SET COMPATIBILITY_LEVEL = 110
+GO
+IF (1 = FULLTEXTSERVICEPROPERTY('IsFullTextInstalled'))
+begin
+EXEC [Demo].[dbo].[sp_fulltext_database] @action = 'enable'
+end
+GO
+ALTER DATABASE [Demo] SET ANSI_NULL_DEFAULT OFF
+GO
+ALTER DATABASE [Demo] SET ANSI_NULLS OFF
+GO
+ALTER DATABASE [Demo] SET ANSI_PADDING OFF
+GO
+ALTER DATABASE [Demo] SET ANSI_WARNINGS OFF
+GO
+ALTER DATABASE [Demo] SET ARITHABORT OFF
+GO
+ALTER DATABASE [Demo] SET AUTO_CLOSE OFF
+GO
+ALTER DATABASE [Demo] SET AUTO_SHRINK OFF
+GO
+ALTER DATABASE [Demo] SET AUTO_UPDATE_STATISTICS ON
+GO
+ALTER DATABASE [Demo] SET CURSOR_CLOSE_ON_COMMIT OFF
+GO
+ALTER DATABASE [Demo] SET CURSOR_DEFAULT  GLOBAL
+GO
+ALTER DATABASE [Demo] SET CONCAT_NULL_YIELDS_NULL OFF
+GO
+ALTER DATABASE [Demo] SET NUMERIC_ROUNDABORT OFF
+GO
+ALTER DATABASE [Demo] SET QUOTED_IDENTIFIER OFF
+GO
+ALTER DATABASE [Demo] SET RECURSIVE_TRIGGERS OFF
+GO
+ALTER DATABASE [Demo] SET  DISABLE_BROKER
+GO
+ALTER DATABASE [Demo] SET AUTO_UPDATE_STATISTICS_ASYNC OFF
+GO
+ALTER DATABASE [Demo] SET DATE_CORRELATION_OPTIMIZATION OFF
+GO
+ALTER DATABASE [Demo] SET TRUSTWORTHY OFF
+GO
+ALTER DATABASE [Demo] SET ALLOW_SNAPSHOT_ISOLATION OFF
+GO
+ALTER DATABASE [Demo] SET PARAMETERIZATION SIMPLE
+GO
+ALTER DATABASE [Demo] SET READ_COMMITTED_SNAPSHOT OFF
+GO
+ALTER DATABASE [Demo] SET HONOR_BROKER_PRIORITY OFF
+GO
+ALTER DATABASE [Demo] SET RECOVERY SIMPLE
+GO
+ALTER DATABASE [Demo] SET  MULTI_USER
+GO
+ALTER DATABASE [Demo] SET PAGE_VERIFY CHECKSUM
+GO
+ALTER DATABASE [Demo] SET DB_CHAINING OFF
+GO
+ALTER DATABASE [Demo] SET FILESTREAM( NON_TRANSACTED_ACCESS = OFF )
+GO
+ALTER DATABASE [Demo] SET TARGET_RECOVERY_TIME = 0 SECONDS
+GO
+USE [Demo]
+GO
+/****** Object:  Table [dbo].[tblCustomer]    Script Date: 30-09-2018 15:40:40 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_PADDING ON
+GO
+CREATE TABLE [dbo].[tblCustomer](
+	[id] [bigint] IDENTITY(101,1) NOT NULL,
+	[Name] [varchar](250) NOT NULL,
+	[Age] [int] NULL,
+	[Address] [varchar](500) NOT NULL,
+	[IsActive] [bit] NOT NULL CONSTRAINT [DF__tblCustomer__isactive]  DEFAULT ((1)),
+	[CreatedDate] [datetime] NOT NULL CONSTRAINT [DF__tblCustomer__CreatedDate]  DEFAULT (getdate()),
+	[ModifiedDate] [datetime] NOT NULL CONSTRAINT [DF__tblCustomer__ModifiedDate]  DEFAULT (getdate()),
+	[CreatedBy] [varchar](50) NOT NULL,
+	[ModifiedBy] [varchar](50) NOT NULL,
+ CONSTRAINT [PK__tblCustomer__Id] PRIMARY KEY CLUSTERED
+(
+	[id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
 
-        #header {
-            background: #efefef;
-            padding: 0;
-        }
+GO
+SET ANSI_PADDING OFF
+GO
+/****** Object:  Table [dbo].[tblProduct]    Script Date: 30-09-2018 15:40:40 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_PADDING ON
+GO
+CREATE TABLE [dbo].[tblProduct](
+	[id] [bigint] IDENTITY(101,1) NOT NULL,
+	[Name] [varchar](250) NOT NULL,
+	[Price] [int] NULL,
+	[IsActive] [bit] NOT NULL CONSTRAINT [DF__tblProduct__isactive]  DEFAULT ((1)),
+	[CreatedDate] [datetime] NOT NULL CONSTRAINT [DF__tblProduct__CreatedDate]  DEFAULT (getdate()),
+	[ModifiedDate] [datetime] NOT NULL CONSTRAINT [DF__tblProduct__ModifiedDate]  DEFAULT (getdate()),
+	[CreatedBy] [varchar](50) NOT NULL,
+	[ModifiedBy] [varchar](50) NOT NULL,
+ CONSTRAINT [PK__tblProduct__Id] PRIMARY KEY CLUSTERED
+(
+	[id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
 
-        h1 {
-            font-size: 48px;
-            font-weight: normal;
-            margin: 0;
-            padding: 0 30px;
-            line-height: 150px;
-        }
+GO
+SET ANSI_PADDING OFF
+GO
+/****** Object:  Table [dbo].[tblProductSold]    Script Date: 30-09-2018 15:40:40 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_PADDING ON
+GO
+CREATE TABLE [dbo].[tblProductSold](
+	[id] [bigint] IDENTITY(101,1) NOT NULL,
+	[ProductId] [bigint] NOT NULL,
+	[CustomerId] [bigint] NOT NULL,
+	[StoreId] [bigint] NOT NULL,
+	[DateSold] [datetime] NOT NULL,
+	[IsActive] [bit] NOT NULL,
+	[CreatedDate] [datetime] NOT NULL,
+	[ModifiedDate] [datetime] NOT NULL,
+	[CreatedBy] [varchar](50) NOT NULL,
+	[ModifiedBy] [varchar](50) NOT NULL,
+ CONSTRAINT [PK__tblProductSold__Id] PRIMARY KEY CLUSTERED
+(
+	[id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
 
-        p {
-            font-size: 20px;
-            color: #fff;
-            background: #969696;
-            padding: 0 30px;
-            line-height: 50px;
-        }
+GO
+SET ANSI_PADDING OFF
+GO
+/****** Object:  Table [dbo].[tblStore]    Script Date: 30-09-2018 15:40:40 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_PADDING ON
+GO
+CREATE TABLE [dbo].[tblStore](
+	[id] [bigint] IDENTITY(101,1) NOT NULL,
+	[Name] [varchar](250) NOT NULL,
+	[Address] [varchar](250) NULL,
+	[IsActive] [bit] NOT NULL CONSTRAINT [DF__tblStore__isactive]  DEFAULT ((1)),
+	[CreatedDate] [datetime] NOT NULL CONSTRAINT [DF__tblStore__CreatedDate]  DEFAULT (getdate()),
+	[ModifiedDate] [datetime] NOT NULL CONSTRAINT [DF__tblStore__ModifiedDate]  DEFAULT (getdate()),
+	[CreatedBy] [varchar](50) NOT NULL,
+	[ModifiedBy] [varchar](50) NOT NULL,
+ CONSTRAINT [PK__tblStore__Id] PRIMARY KEY CLUSTERED
+(
+	[id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
 
-        #main {
-            padding: 5px 30px;
-        }
+GO
+SET ANSI_PADDING OFF
+GO
+SET IDENTITY_INSERT [dbo].[tblCustomer] ON
 
-        .section {
-            width: 21.7%;
-            float: left;
-            margin: 0 0 0 4%;
-        }
+GO
+INSERT [dbo].[tblCustomer] ([id], [Name], [Age], [Address], [IsActive], [CreatedDate], [ModifiedDate], [CreatedBy], [ModifiedBy]) VALUES (101, N'Brajesh hufguggh', 12232, N'New delhi', 1, CAST(N'2018-09-30 07:07:45.543' AS DateTime), CAST(N'2018-09-30 12:11:53.133' AS DateTime), N'1', N'1')
+GO
+INSERT [dbo].[tblCustomer] ([id], [Name], [Age], [Address], [IsActive], [CreatedDate], [ModifiedDate], [CreatedBy], [ModifiedBy]) VALUES (102, N'asdrgugrt', 435, N'adcfv', 1, CAST(N'2018-09-30 01:01:52.897' AS DateTime), CAST(N'2018-09-30 01:05:54.067' AS DateTime), N'101', N'101')
+GO
+INSERT [dbo].[tblCustomer] ([id], [Name], [Age], [Address], [IsActive], [CreatedDate], [ModifiedDate], [CreatedBy], [ModifiedBy]) VALUES (103, N'ghnn', 65, N'rtyythb', 1, CAST(N'2018-09-30 01:06:57.777' AS DateTime), CAST(N'2018-09-30 03:12:22.447' AS DateTime), N'101', N'101')
+GO
+INSERT [dbo].[tblCustomer] ([id], [Name], [Age], [Address], [IsActive], [CreatedDate], [ModifiedDate], [CreatedBy], [ModifiedBy]) VALUES (104, N'Peter', 965, N'Mohan Nagarhh', 1, CAST(N'2018-09-30 11:48:46.397' AS DateTime), CAST(N'2018-09-30 11:49:06.137' AS DateTime), N'101', N'101')
+GO
+INSERT [dbo].[tblCustomer] ([id], [Name], [Age], [Address], [IsActive], [CreatedDate], [ModifiedDate], [CreatedBy], [ModifiedBy]) VALUES (105, N'brajesh', 453, N'v', 1, CAST(N'2018-09-30 13:38:17.077' AS DateTime), CAST(N'2018-09-30 13:53:55.353' AS DateTime), N'101', N'101')
+GO
+SET IDENTITY_INSERT [dbo].[tblCustomer] OFF
+GO
+SET IDENTITY_INSERT [dbo].[tblProduct] ON
 
-            .section h2 {
-                font-size: 13px;
-                text-transform: uppercase;
-                margin: 0;
-                border-bottom: 1px solid silver;
-                padding-bottom: 12px;
-                margin-bottom: 8px;
-            }
+GO
+INSERT [dbo].[tblProduct] ([id], [Name], [Price], [IsActive], [CreatedDate], [ModifiedDate], [CreatedBy], [ModifiedBy]) VALUES (101, N'testdfdfd', 122, 0, CAST(N'2018-09-30 03:06:29.403' AS DateTime), CAST(N'2018-09-30 03:06:46.833' AS DateTime), N'101', N'101')
+GO
+INSERT [dbo].[tblProduct] ([id], [Name], [Price], [IsActive], [CreatedDate], [ModifiedDate], [CreatedBy], [ModifiedBy]) VALUES (102, N'nmbzxk,acb', 562, 1, CAST(N'2018-09-30 03:07:03.327' AS DateTime), CAST(N'2018-09-30 03:12:34.747' AS DateTime), N'101', N'101')
+GO
+INSERT [dbo].[tblProduct] ([id], [Name], [Price], [IsActive], [CreatedDate], [ModifiedDate], [CreatedBy], [ModifiedBy]) VALUES (103, N'potato', 12, 1, CAST(N'2018-09-30 11:49:49.053' AS DateTime), CAST(N'2018-09-30 11:49:49.053' AS DateTime), N'101', N'101')
+GO
+SET IDENTITY_INSERT [dbo].[tblProduct] OFF
+GO
+SET IDENTITY_INSERT [dbo].[tblStore] ON
 
-            .section.first {
-                margin-left: 0;
-            }
-
-                .section.first h2 {
-                    font-size: 24px;
-                    text-transform: none;
-                    margin-bottom: 25px;
-                    border: none;
-                }
-
-                .section.first li {
-                    border-top: 1px solid silver;
-                    padding: 8px 0;
-                }
-
-            .section.last {
-                margin-right: 0;
-            }
-
-        ul {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-            line-height: 20px;
-        }
-
-        li {
-            padding: 4px 0;
-        }
-
-        a {
-            color: #267cb2;
-            text-decoration: none;
-        }
-
-            a:hover {
-                text-decoration: underline;
-            }
-    </style>
-</head>
-<body>
-
-    <div id="header">
-        <h1>Your ASP.NET application</h1>
-        <p>Congratulations! You've created a project</p>
-    </div>
-
-    <div id="main">
-        <div class="section first">
-            <h2>This application consists of:</h2>
-            <ul>
-                <li>Sample pages showing basic nav between Home, About, and Contact</li>
-                <li>Theming using <a href="http://go.microsoft.com/fwlink/?LinkID=615519">Bootstrap</a></li>
-                <li><a href="http://go.microsoft.com/fwlink/?LinkID=615520">Authentication</a>, if selected, shows how to register and sign in</li>
-                <li>ASP.NET features managed using <a href="http://go.microsoft.com/fwlink/?LinkID=320756">NuGet</a></li>
-            </ul>
-        </div>
-
-        <div class="section">
-            <h2>Customize app</h2>
-            <ul>
-                <li><a href="http://go.microsoft.com/fwlink/?LinkID=615541">Get started with ASP.NET MVC</a></li>
-                <li><a href="http://go.microsoft.com/fwlink/?LinkID=615523">Change the site's theme</a></li>
-                <li><a href="http://go.microsoft.com/fwlink/?LinkID=615524">Add more libraries using NuGet</a></li>
-                <li><a href="http://go.microsoft.com/fwlink/?LinkID=615542">Configure authentication</a></li>
-                <li><a href="http://go.microsoft.com/fwlink/?LinkID=615526">Customize information about the website users</a></li>
-                <li><a href="http://go.microsoft.com/fwlink/?LinkID=615527">Get information from social providers</a></li>
-                <li><a href="http://go.microsoft.com/fwlink/?LinkID=615528">Add HTTP services using ASP.NET Web API</a></li>
-                <li><a href="http://go.microsoft.com/fwlink/?LinkID=615529">Secure your web API</a></li>
-                <li><a href="http://go.microsoft.com/fwlink/?LinkID=615530">Add real-time web with ASP.NET SignalR</a></li>
-                <li><a href="http://go.microsoft.com/fwlink/?LinkID=615531">Add components using Scaffolding</a></li>
-                <li><a href="http://go.microsoft.com/fwlink/?LinkID=615532">Test your app with Browser Link</a></li>
-                <li><a href="http://go.microsoft.com/fwlink/?LinkID=615533">Share your project</a></li>
-            </ul>
-        </div>
-
-        <div class="section">
-            <h2>Deploy</h2>
-            <ul>
-                <li><a href="http://go.microsoft.com/fwlink/?LinkID=615534">Ensure your app is ready for production</a></li>
-                <li><a href="http://go.microsoft.com/fwlink/?LinkID=615535">Microsoft Azure</a></li>
-                <li><a href="http://go.microsoft.com/fwlink/?LinkID=615536">Hosting providers</a></li>
-            </ul>
-        </div>
-
-        <div class="section last">
-            <h2>Get help</h2>
-            <ul>
-                <li><a href="http://go.microsoft.com/fwlink/?LinkID=615537">Get help</a></li>
-                <li><a href="http://go.microsoft.com/fwlink/?LinkID=615538">Get more templates</a></li>
-            </ul>
-        </div>
-    </div>
-
-</body>
-</html>
+GO
+INSERT [dbo].[tblStore] ([id], [Name], [Address], [IsActive], [CreatedDate], [ModifiedDate], [CreatedBy], [ModifiedBy]) VALUES (101, N'New Delhi mjhksac', N'jkkdashkdjsaxzcdfcz', 0, CAST(N'2018-09-30 03:11:13.147' AS DateTime), CAST(N'2018-09-30 03:11:21.710' AS DateTime), N'101', N'101')
+GO
+INSERT [dbo].[tblStore] ([id], [Name], [Address], [IsActive], [CreatedDate], [ModifiedDate], [CreatedBy], [ModifiedBy]) VALUES (102, N'XZcZC', N'xcAcdad', 0, CAST(N'2018-09-30 03:12:47.620' AS DateTime), CAST(N'2018-09-30 03:12:47.620' AS DateTime), N'101', N'101')
+GO
+INSERT [dbo].[tblStore] ([id], [Name], [Address], [IsActive], [CreatedDate], [ModifiedDate], [CreatedBy], [ModifiedBy]) VALUES (103, N'hello1', N'Mohan Nagar', 1, CAST(N'2018-09-30 15:18:07.667' AS DateTime), CAST(N'2018-09-30 15:18:07.667' AS DateTime), N'101', N'101')
+GO
+SET IDENTITY_INSERT [dbo].[tblStore] OFF
+GO
+ALTER TABLE [dbo].[tblProductSold] ADD  CONSTRAINT [DF__tblProductSold__DateSold]  DEFAULT (getdate()) FOR [DateSold]
+GO
+ALTER TABLE [dbo].[tblProductSold] ADD  CONSTRAINT [DF__tblProductSold__isactive]  DEFAULT ((1)) FOR [IsActive]
+GO
+ALTER TABLE [dbo].[tblProductSold] ADD  CONSTRAINT [DF__tblProductSold__CreatedDate]  DEFAULT (getdate()) FOR [CreatedDate]
+GO
+ALTER TABLE [dbo].[tblProductSold] ADD  CONSTRAINT [DF__tblProductSold__ModifiedDate]  DEFAULT (getdate()) FOR [ModifiedDate]
+GO
+ALTER TABLE [dbo].[tblProductSold]  WITH CHECK ADD FOREIGN KEY([CustomerId])
+REFERENCES [dbo].[tblCustomer] ([id])
+GO
+ALTER TABLE [dbo].[tblProductSold]  WITH CHECK ADD FOREIGN KEY([ProductId])
+REFERENCES [dbo].[tblProduct] ([id])
+GO
+ALTER TABLE [dbo].[tblProductSold]  WITH CHECK ADD FOREIGN KEY([StoreId])
+REFERENCES [dbo].[tblStore] ([id])
+GO
+USE [master]
+GO
+ALTER DATABASE [Demo] SET  READ_WRITE
+GO
