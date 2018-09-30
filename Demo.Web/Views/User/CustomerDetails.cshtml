@@ -1,0 +1,585 @@
+﻿@model TMS.Model.Customers.CustomerViewModel
+@using TMS.Web.Helper
+@using TMS.Utility
+@using TMS.Model.Master;
+@using TMS.Model.Users;
+@using System.Collections.Generic
+@using TMS.Utility.Helper
+
+@{
+    ViewBag.Title = "Customer Detail";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    UserTypeViewModel userType = null;
+    Qparams qparams = new Qparams();
+    if (TempData["qparams"] != null)
+    {
+        qparams = (Qparams)TempData.Peek("qparams");
+    }
+
+    //List<UserTypeViewModel> userTypes = ViewBag.UserTypes as List<UserTypeViewModel>;
+    //if (userTypes != null && userTypes.Count == 1)
+    //{
+    //    userType = userTypes.SingleOrDefault();
+    //    ViewBag.Title = userType.Name + " Detail";
+    //}
+
+
+}
+<div class="right_col" role="main">
+    <div class="">
+        <div class="page-title">
+            <div class="title_left">
+                <h3>@ViewBag.Title</h3>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="x_panel">
+                    <div class="x_content">
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                        @using (Html.BeginForm("CustomerDetails", "User", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                        {
+                            @Html.AntiForgeryToken()
+                            @Html.HiddenFor(model => model.Id)
+                            @*if (Model != null)
+                            {
+                                @Html.Hidden("hdnReportingTo", Model.ReportingTo)
+                            }*@
+
+                            @*if (userType != null)
+                            {
+                                @Html.HiddenFor(model => model.LoginType, new { @class = "control-label", Value = userType.Id })
+                            }
+                            else
+                            {
+                                <div class="item form-group">
+                                    @Html.LabelFor(model => model.LoginType, htmlAttributes: new { @class = "control-label col-md-3 col-sm-3 col-xs-12" })
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        @Html.DropDownListFor(x => x.LoginType, new SelectList(@ViewBag.LoginType, "Id", "Name"), "-- Select Login Type --", new { @class = "form-control scrollable-menu", @onchange = "GetReportingConfig()" })
+                                        @Html.ValidationMessageFor(m => m.LoginType, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            }*@
+
+                            @*if (UserAuthenticate.Role == AppConstant.RoleAdmin)
+                                {
+                                    <div class="item form-group" id="itemRM" style="display:none">
+                                        <label class="control-label col-md-3 col-sm-3 col-xs-12" id="lblRM">Regional Manager</label>
+                                        <div class="col-md-6 col-sm-6 col-xs-12">
+                                            <select class="form-control scrollable-menu" id="drpRM" onchange="FillSM()">
+                                                <option value="">--- Select Regional Manager ---</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-3 col-sm-3 col-xs-12">
+                                            <label class="control-label text-danger" id="lblRMMsg">(This is to only filter the Reporting)</label>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="item form-group" id="itemreporting" style="display:none">
+                                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Reporting *</label>
+                                        <div class="col-md-6 col-sm-6 col-xs-12">
+                                            @Html.DropDownListFor(x => x.ReportingTo, Enumerable.Empty<SelectListItem>(), "--- Select Reporting ---", new { @class = "form-control scrollable-menu", id = "drpreporting" })
+                                            @Html.ValidationMessageFor(m => m.ReportingTo, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                }*@
+
+                            <div class="item form-group">
+                                @Html.LabelFor(model => model.FirstName, htmlAttributes: new { @class = "control-label col-md-3 col-sm-3 col-xs-12" })
+                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                    @Html.TextBoxFor(x => x.FirstName, new { @class = "form-control", placeholder = "First Name" })
+                                    @Html.ValidationMessageFor(m => m.FirstName, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="item form-group">
+                                @Html.LabelFor(model => model.LastName, htmlAttributes: new { @class = "control-label col-md-3 col-sm-3 col-xs-12" })
+                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                    @Html.TextBoxFor(x => x.LastName, new { @class = "form-control", placeholder = "Last Name" })
+                                    @Html.ValidationMessageFor(m => m.LastName, "", new { @class = "text-danger" })
+
+                                </div>
+                            </div>
+
+                            @*<div class="item form-group">
+                                    @Html.LabelFor(model => model.AssignedRegionName, htmlAttributes: new { @class = "control-label col-md-3 col-sm-3 col-xs-12" })
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <div class="input-group">
+                                            @Html.TextBoxFor(x => x.AssignedRegionName, new { @class = "form-control", placeholder = "Region", @readonly = true })
+                                            <span class="input-group-btn">
+                                                <button type="button" id="btnRemoveRegion" class="btn btn-danger" data-original-title="This will remove the selected region" data-toggle="tooltip">Remove Region</button>
+                                                <button type="button" id="myBtn" class="btn btn-primary" data-target="#regionModal" data-toggle="modal">Select Region</button>
+                                            </span>
+                                        </div>
+                                        @Html.ValidationMessageFor(m => m.AssignedRegionId, "", new { @class = "text-danger" })
+                                        @Html.HiddenFor(model => model.AssignedRegionId, new { id = "AssignedRegionId" })
+                                    </div>
+                                </div>*@
+                        if (Model == null || Model.Id == 0)
+                        {
+                            <div class="item form-group">
+                                @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-3 col-sm-3 col-xs-12" })
+                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                    @Html.TextBoxFor(x => x.Email, new { @class = "form-control", placeholder = "Email" })
+                                    @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                                <div class="item form-group">
+                                    @Html.LabelFor(model => model.ConfirmEmail, htmlAttributes: new { @class = "control-label col-md-3 col-sm-3 col-xs-12" })
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        @Html.TextBoxFor(x => x.ConfirmEmail, new { @class = "form-control", placeholder = "Confirm Email" })
+                                        @Html.ValidationMessageFor(m => m.ConfirmEmail, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                        }
+                        else
+                        {
+                            @Html.HiddenFor(model => model.Email)
+                            @Html.HiddenFor(model => model.ConfirmEmail)
+                        }
+
+                        <div class="item form-group">
+                            @Html.LabelFor(model => model.PhoneNumber, htmlAttributes: new { @class = "control-label col-md-3 col-sm-3 col-xs-12" })
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                @Html.TextBoxFor(x => x.PhoneNumber, new { @class = "form-control", placeholder = "Phone Number" })
+                                @Html.ValidationMessageFor(m => m.PhoneNumber, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                            @*<div class="item form-group">
+                                @Html.LabelFor(model => model.PhoneNumberConfirmed, htmlAttributes: new { @class = "control-label col-md-3 col-sm-3 col-xs-12" })
+                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                    @Html.TextBoxFor(x => x.PhoneNumberConfirmed, new { @class = "form-control", placeholder = "Phone" })
+                                    @Html.ValidationMessageFor(m => m.PhoneNumberConfirmed, "", new { @class = "text-danger" })
+                                </div>
+                            </div>*@
+                            if (Model == null || Model.Id == 0)
+                            {
+                                <div class="item form-group">
+                                    @Html.LabelFor(model => model.Password, htmlAttributes: new { @class = "control-label col-md-3 col-sm-3 col-xs-12" })
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        @Html.PasswordFor(x => x.Password, new { @class = "form-control", placeholder = "Password" })
+                                        @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.ConfirmPassword, htmlAttributes: new { @class = "control-label col-md-3 col-sm-3 col-xs-12" })
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        @Html.PasswordFor(model => model.ConfirmPassword, new { @class = "form-control", @placeholder = "Confirm Password" })
+                                        @Html.ValidationMessageFor(model => model.ConfirmPassword, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            }
+
+                            <div class="ln_solid"></div>
+                            <div class="col-md-9 col-sm-9 col-xs-12">
+                                <div class="form-group pull-right">
+                                    @*<a href="@Url.Action("ManageUsers", "User" , new {data=SecurityHelper.Encrypt(Newtonsoft.Json.JsonConvert.SerializeObject(qparams))} )" class="btn btn-warning" name="Cancel">Cancel</a>*@
+                                    <button id="save" type="submit" class="btn btn-success" name="submitButton">Save</button>
+                                </div>
+                            </div>
+                            if (Model == null)
+                            {
+                                <div class="clearfix"></div>
+
+                                <div style="text-align: left">
+                                    <label class="control-label">Note: </label>
+                                    <ul>
+                                        <li><span>Password Must contain at least one digit</span></li>
+                                        <li><span>Password Must contain at least one uppercase and one lower character</span></li>
+                                        <li><span>Password Must contain at least one special symbol</span></li>
+                                        <li><span>Password Length at least 8 characters and also maximum of 15</span></li>
+                                    </ul>
+                                </div>
+
+                            }
+
+                            <div class="modal fade" id="regionModal" tabindex="-1" role="dialog" aria-labelledby="myModal4Label" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        @*<div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                            <h4 class="modal-title" id="myModalLabel2">Select Region</h4>
+                                        </div>*@
+                                        <div class="modal-body">
+                                            <div class="container">
+                                                <div class="row">
+                                                    <div class="col-md-12 col-sm-12 col-xs-12">
+                                                        @*<div class="form-group">
+                                                            <label for="contain" class="control-label col-md-3 col-sm-3 col-xs-12">Country</label>
+                                                            <div class="col-md-8 col-sm-8 col-xs-12">
+                                                                @Html.DropDownListFor(model => model.UserDetails.CurCountry, new SelectList(@ViewBag.Countries, "Id", "Name"), "--- Select Country ---", new { @id = "Country", @class = "form-control scrollable-menu", @onchange = "FillState()" })
+                                                            </div>
+                                                        </div>*@
+                                                        @*@if (Model != null)
+                                                        {
+                                                            <div class="form-group">
+                                                                <label for="contain" class="control-label col-md-3 col-sm-3 col-xs-12">State</label>
+                                                                <div class="col-md-8 col-sm-8 col-xs-12">
+                                                                    @Html.DropDownListFor(model => model.UserDetails.CurState, new SelectList(@ViewBag.States, "Id", "Name"), "--- Select State ---", new { @id = "State", @class = "form-control scrollable-menu", @onchange = "FillCities()" })
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="form-group">
+                                                                <label for="contain" class="control-label col-md-3 col-sm-3 col-xs-12">City</label>
+                                                                <div class="col-md-8 col-sm-8 col-xs-12">
+                                                                    @Html.DropDownListFor(model => model.UserDetails.CurCity, new SelectList(@ViewBag.Cities, "Id", "Name"), "--- Select City ---", new { @id = "City", @class = "form-control scrollable-menu", @onchange = "FillRegion()" })
+                                                                </div>
+                                                            </div>
+
+
+                                                            <div class="form-group">
+                                                                <label for="contain" class="control-label col-md-3 col-sm-3 col-xs-12">Region</label>
+                                                                <div class="col-md-8 col-sm-8 col-xs-12">
+                                                                    @Html.DropDownList("Region", new SelectList(@ViewBag.Regions, "Id", "Name"), "--- Select Region ---", new { @class = "form-control scrollable-menu" })
+                                                                </div>
+                                                            </div>
+                                                        }
+                                                        else
+                                                        {
+                                                            <div class="form-group">
+                                                                <label for="contain" class="control-label col-md-3 col-sm-3 col-xs-12">State</label>
+                                                                <div class="col-md-8 col-sm-8 col-xs-12">
+                                                                    @Html.DropDownListFor(model => model.UserDetails.CurState, Enumerable.Empty<SelectListItem>(), "--- Select State ---", new { @id = "State", @class = "form-control scrollable-menu", @onchange = "FillCities()" })
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="form-group">
+                                                                <label for="contain" class="control-label col-md-3 col-sm-3 col-xs-12">City</label>
+                                                                <div class="col-md-8 col-sm-8 col-xs-12">
+                                                                    @Html.DropDownListFor(model => model.UserDetails.CurCity, Enumerable.Empty<SelectListItem>(), "--- Select City ---", new { @id = "City", @class = "form-control scrollable-menu", @onchange = "FillRegion()" })
+                                                                </div>
+                                                            </div>
+
+
+                                                            <div class="form-group">
+                                                                <label for="contain" class="control-label col-md-3 col-sm-3 col-xs-12">Region</label>
+                                                                <div class="col-md-8 col-sm-8 col-xs-12">
+                                                                    @Html.DropDownList("Region", Enumerable.Empty<SelectListItem>(), "--- Select Region ---", new { @class = "form-control scrollable-menu" })
+                                                                </div>
+                                                            </div>
+                                                        }
+                                                            <div class="col-md-11 col-sm-11 col-xs-12">
+                                                            <button type="button" class="btn btn-primary btn-sm pull-right" id="selectRegion" data-dismiss="modal">
+                                                                <span class="fa fa-check"></span> Select
+                                                            </button>
+                                                        </div>*@
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="progressDiv" class="loader"></div>
+
+
+</div>
+@section scripts{
+    @Scripts.Render("~/bundles/validations/js")
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $(".loader").fadeOut("slow");
+            $("form").validate();            // <- INITIALIZES PLUGIN
+
+            $(document).on("click", "#save", function () {
+                if ($("form").valid() == true) {
+                    $(".loader").fadeOut("slow");
+                    $(":submit").submit();
+                }
+            });
+
+            //GetReportingConfig();
+
+            $(document).on("click", "#btnRemoveRegion", function () {
+                $("#AssignedRegionId").val(null);
+                $("#AssignedRegionName").val("");
+
+            });
+
+            $(document).on("click", "#selectRegion", function () {
+                if ($("#Region option:selected").val() && $("#Region option:selected").val() != "") {
+                    $("#AssignedRegionId").val($("#Region option:selected").val());
+                    $("#AssignedRegionName").val($("#Region option:selected").text());
+                }
+                else {
+                    $("#AssignedRegionId").val(null);
+                    $("#AssignedRegionName").val("");
+                }
+
+            });
+
+        });
+        function FillState() {
+            var id = $('#Country').val();
+            if (id == "") {
+                $("#State").html(""); // clear before appending new list
+                $("#City").html(""); // clear before appending new list
+                $("#Region").html(""); // clear before appending new list
+
+                $("#State").append($('<option></option>').val("").html("--- Select State ---"));
+                $("#City").append($('<option></option>').val("").html("--- Select City ---"));
+                $("#Region").append($('<option></option>').val("").html("--- Select Region ---"));
+
+                return;
+            }
+            $.ajax({
+                url: '/Home/GetStates?countryId=' + id,
+                type: "GET",
+                dataType: "JSON",
+                success: function (states) {
+                    $("#State").html(""); // clear before appending new list
+                    $("#State").append($('<option></option>').val("").html("--- Select State ---"));
+
+                    $.each(states, function (i, state) {
+                        $("#State").append(
+                            $('<option></option>').val(state.Id).html(state.Name));
+                    });
+                    if (states.length > 0)
+                    { FillCities(); }
+                }
+            });
+        }
+
+        function FillCities() {
+            var id = $('#State').val();
+            var countryId = $('#Country').val();
+
+            if (id == "") {
+                $("#City").html(""); // clear before appending new list
+                $("#Region").html(""); // clear before appending new list
+
+                $("#City").append($('<option></option>').val("").html("--- Select City ---"));
+                $("#Region").append($('<option></option>').val("").html("--- Select Region ---"));
+                return;
+            }
+
+            $.ajax({
+                url: '/Home/GetCities?stateId=' + id + "&countryId=" + countryId,
+                type: "GET",
+                dataType: "JSON",
+                success: function (cities) {
+                    $("#City").html(""); // clear before appending new list
+                    $("#City").append($('<option></option>').val("").html("--- Select City ---"));
+                    $.each(cities, function (i, city) {
+                        $("#City").append(
+                            $('<option></option>').val(city.Id).html(city.Name));
+                    });
+                }
+            });
+        }
+
+        function FillRegion() {
+            var id = $('#City').val();
+            if (id == "") {
+                $("#Region").html(""); // clear before appending new list
+                $("#Region").append($('<option></option>').val("").html("--- Select Region ---"));
+                return;
+            }
+
+            $.ajax({
+                url: '/Home/GetRegions?cityId=' + id,
+                type: "GET",
+                dataType: "JSON",
+                success: function (results) {
+                    $("#Region").html(""); // clear before appending new list
+                    $("#Region").append($('<option></option>').val("").html("--- Select Region ---"));
+                    $.each(results, function (i, result) {
+                        $("#Region").append(
+                            $('<option></option>').val(result.Id).html(result.Name));
+                    });
+                }
+            });
+        }
+
+        function GetReportingConfig() {
+            var userTypeId = $('#UserTypeId').val();
+            $("#lblRMMsg").hide();
+            $.ajax({
+                url: '/User/GetReportingTo?addingUserTypeId=' + userTypeId,
+                type: "GET",
+                dataType: "JSON",
+                success: function (results) {
+                    $("#itemRM").hide();
+                    $("#itemreporting").hide();
+
+                    if (results.isSuccess == true) {
+
+                        var requiredUserTypes = [];
+                        requiredUserTypes = results.message.split(',');
+                        var dataBind = false;
+
+                        if (requiredUserTypes.length == 1 && requiredUserTypes[0] == "RM") {
+                            $("#itemreporting").show();
+                            if (dataBind == false) {
+                                $("#drpreporting").html(""); // clear before appending new list
+                                $("#drpreporting").append($('<option></option>').val("").html("--- Select Regional Manager ---"));
+                                $.each(results.data, function (i, result) {
+                                    $("#drpreporting").append(
+                                        $('<option></option>').val(result.Id).html(result.FirstName));
+                                });
+                            }
+
+                            if ($('#hdnReportingTo').val() && $('#hdnReportingTo').val() !== "") {
+                                if ($("#drpreporting option[value='" + $('#hdnReportingTo').val() + "']").length > 0) {
+                                    $('#drpreporting').val($('#hdnReportingTo').val());
+                                }
+                            }
+
+                        }
+                        else {
+                            $.each(requiredUserTypes, function (i, requiredUserType) {
+                                if (requiredUserType === "RM") {
+                                    dataBind = true;
+                                    $("#itemRM").show();
+                                    $("#drpRM").html(""); // clear before appending new list
+                                    $("#drpRM").append($('<option></option>').val("").html("--- Select Regional Manager ---"));
+                                    $.each(results.data, function (i, result) {
+                                        $("#drpRM").append(
+                                            $('<option></option>').val(result.Id).html(result.FirstName));
+                                    });
+
+                                    if ($('#hdnReportingTo').val() && $('#hdnReportingTo').val() !== "") {
+                                        if ($("#drpRM option[value='" + $('#hdnReportingTo').val() + "']").length > 0) {
+                                            $('#drpRM').val($('#hdnReportingTo').val());
+                                        }
+                                    }
+                                    $("#itemreporting").hide();
+                                }
+
+                                if (requiredUserType === "SM") {
+                                    $("#itemreporting").show();
+                                    if (dataBind == false) {
+                                        $("#drpreporting").html(""); // clear before appending new list
+                                        $("#drpreporting").append($('<option></option>').val("").html("--- Select Sales Manager ---"));
+                                        $.each(results.data, function (i, result) {
+                                            $("#drpreporting").append(
+                                                $('<option></option>').val(result.Id).html(result.FirstName));
+                                        });
+                                    }
+                                    else {
+                                        $("#drpreporting").html(""); // clear before appending new list
+                                        $("#lblRMMsg").show();
+                                    }
+
+                                    if ($('#Id').val() && $('#Id').val() !== "") {
+                                        FillSM();
+                                    }
+
+                                    if ($('#hdnReportingTo').val() && $('#hdnReportingTo').val() !== "") {
+                                        if ($("#drpreporting option[value='" + $('#hdnReportingTo').val() + "']").length > 0) {
+                                            $('#drpreporting').val($('#hdnReportingTo').val());
+                                        }
+                                    }
+
+                                }
+
+                                if (requiredUserType === "ADMIN") {
+                                    $("#itemreporting").show();
+                                    if (dataBind == false) {
+                                        $("#drpreporting").html(""); // clear before appending new list
+                                        $("#drpreporting").append($('<option></option>').val("").html("--- Select Admin ---"));
+                                        $.each(results.data, function (i, result) {
+                                            $("#drpreporting").append(
+                                                $('<option></option>').val(result.Id).html(result.FirstName));
+                                        });
+                                    }
+                                    if ($('#hdnReportingTo').val() && $('#hdnReportingTo').val() !== "") {
+                                        if ($("#drpreporting option[value='" + $('#hdnReportingTo').val() + "']").length > 0) {
+                                            $('#drpreporting').val($('#hdnReportingTo').val());
+                                        }
+                                    }
+                                }
+
+
+                            });
+                        }
+
+
+                    }
+                }
+            });
+        }
+
+        function FillRM() {
+            var userId = $('#drpADMIN').val();
+            var userTypeCode = "RM";
+            $.ajax({
+                url: '/User/GetUsers?userId=' + userId + "&userTypeCode=" + userTypeCode,
+                type: "GET",
+                dataType: "JSON",
+                success: function (results) {
+                    $("#drpRM").html(""); // clear before appending new list
+                    $("#drpRM").append($('<option></option>').val("").html("--- Select Regional Manager ---"));
+                    $.each(results, function (i, result) {
+                        $("#drpRM").append(
+                         $('<option></option>').val(result.Id).html(result.FirstName));
+                    });
+
+                    if ($('#hdnReportingTo').val() && $('#hdnReportingTo').val() !== "") {
+                        if ($("#drpRM option[value='" + $('#hdnReportingTo').val() + "']").length > 0) {
+                            $('#drpRM').val($('#hdnReportingTo').val());
+                        }
+                    }
+                }
+            });
+        }
+        function FillSM() {
+            var userId = $('#drpRM').val();
+            var userTypeCode = "SM";
+            $.ajax({
+                url: '/User/GetUsers?userId=' + userId + "&userTypeCode=" + userTypeCode,
+                type: "GET",
+                dataType: "JSON",
+                success: function (results) {
+                    $("#drpreporting").html(""); // clear before appending new list
+                    $("#drpreporting").append($('<option></option>').val("").html("--- Select Sales Manager ---"));
+                    $.each(results, function (i, result) {
+                        $("#drpreporting").append(
+                         $('<option></option>').val(result.Id).html(result.FirstName));
+                    });
+
+                    if ($('#hdnReportingTo').val() && $('#hdnReportingTo').val() !== "") {
+                        if ($("#drpreporting option[value='" + $('#hdnReportingTo').val() + "']").length > 0) {
+                            $('#drpreporting').val($('#hdnReportingTo').val());
+                        }
+                    }
+                }
+            });
+        }
+
+    </script>
+
+    @if (TempData["result"] != null)
+    {
+        MyJsonResult result = TempData["result"] as MyJsonResult;
+
+        if (result.isSuccess == true)
+        {
+            <script>
+                $.toastAlert("Success", "@result.message", "success");
+            </script>
+        }
+        else
+        {
+            <script>
+                $.toastAlert("Error", "@result.message", "error");
+            </script>
+        }
+
+        var resultData = @TempData.Remove("result");
+    }
+}

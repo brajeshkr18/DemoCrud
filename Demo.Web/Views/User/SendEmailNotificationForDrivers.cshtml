@@ -1,0 +1,93 @@
+﻿
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "SendEmailNotificationForDrivers";
+}
+
+
+<div class="content-inner">
+    <!-- Page Header-->
+    <header class="page-header">
+        <div class="container-fluid">
+            <h2 class="no-margin-bottom">Send Notification For All Drivers</h2>
+        </div>
+    </header>
+    <!-- Forms Section-->
+    <section class="forms">
+        <div class="container-fluid">
+            <div class="row">
+                <!-- Form Elements -->
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                       
+                    <div class="card">
+                        <div class="card-header d-flex align-items-center">
+                            <h3 class="h4">Send Notification For All Drivers :</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+
+
+                                <div class="form-group row">
+                                
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                        <div class="row">
+                                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                                @Html.TextBox("NotificationAll","", new {@id= "NotificationAll", @class = "input-material" })
+                                                @Html.Label("Message", htmlAttributes: new { @class = "label-material" })
+                                            </div>
+                                            @*<div class="col-md-6">
+                                                    @Html.TextBoxFor(x => x.UserDetails.CurAddress1, new { @class = "input-material" })
+                                                    @Html.LabelFor(model => model.UserDetails.CurAddress1, htmlAttributes: new { @class = "label-material" })
+                                                    @Html.ValidationMessageFor(m => m.UserDetails.CurAddress1, "", new { @class = "text-danger" })
+                                                </div>*@
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                            </div>
+                            <div class="ln_solid"></div>
+                            <div>
+                                <div class="form-group-material">
+                                   
+                                    <button id="submitButton" type="button" class="btn btn-primary" name="submitButton">Send All Driver</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                       
+                </div>
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer" style="padding-top:44px;">
+        <div class="container-fluid">
+            <div class="row">
+
+            </div>
+        </div>
+    </footer>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $("#submitButton").click(function () {
+           
+            var message=$("#NotificationAll").val();
+            $.ajax({
+                type: 'POST',
+                cache: false,
+                url: '/User/SendMailAllDriver',
+                async: true,
+                data: { message: message },
+                success: function (data) {
+                    alert("Success");
+                  
+
+                }
+            });
+        });
+    });
+</script>

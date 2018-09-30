@@ -1,0 +1,37 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>@ViewBag.Title</title>
+
+    @RenderSection("styles", required: false)    
+    @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/jquery")
+    @Styles.Render("~/vendors/bootstrap/css")
+    <link href="~/Content/form-elements.css" rel="stylesheet" />
+    <link href="~/Content/style.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="~/html/vendors/jquery-toast-plugin/css/jquery.toast.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="top-content">
+        <div class="inner-bg">
+            <div class="custom-container container">
+                @RenderBody()
+            </div>
+        </div>
+    </div>  
+
+
+    <!--- Scripting  section of application-->
+    <!-- jQuery -->
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+
+</body>
+
+</html>

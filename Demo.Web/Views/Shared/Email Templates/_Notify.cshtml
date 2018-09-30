@@ -1,0 +1,25 @@
+﻿@model TMS.Model.Users.UserViewModel
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width" />
+</head>
+<body>
+    <table>
+        <tr>
+        <td class="content">
+            <h3>Hello @Model.FullName,</h3>
+            <p>
+                This is to inform you that your account has been @if (Model.AccountStatus == 1)
+                { <text>activated.</text>}
+                else if(Model.AccountStatus == 4) { <text>deactivated.</text>}
+            </p>
+            <p></p>
+            <p>Regards<br />Transport Management System<br /></p>
+        </td>
+    </tr>
+</table>
+</body>
+</html>

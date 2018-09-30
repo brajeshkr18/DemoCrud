@@ -1,0 +1,301 @@
+/* your styles go here */
+.form-group.required .control-label:after {
+    content: "*";
+    color: red;
+}
+
+
+.input-group-btn .btn-group {
+    display: flex !important;
+}
+
+.btn-group .btn {
+    border-radius: 0;
+    margin-left: -1px;
+}
+
+    .btn-group .btn:last-child {
+        border-top-right-radius: 4px;
+        border-bottom-right-radius: 4px;
+    }
+
+.btn-group .form-horizontal .btn[type="submit"] {
+    border-top-left-radius: 4px;
+    border-bottom-left-radius: 4px;
+}
+
+.form-horizontal .form-group {
+    margin-left: 0;
+    margin-right: 0;
+}
+
+.form-group .form-control:last-child {
+    border-top-left-radius: 4px;
+    border-bottom-left-radius: 4px;
+}
+
+.custom-modal {
+    width: 75% !important;
+    margin: auto;
+    top: 5%;
+}
+
+@media screen and (min-width: 768px) {
+    #adv-search {
+        width: 500px;
+    }
+
+    .dropdown.dropdown-lg {
+        position: static !important;
+    }
+
+        .dropdown.dropdown-lg .dropdown-menu {
+            min-width: 500px;
+        }
+}
+
+
+.fa-2x {
+    font-size: 1.5em;
+}
+
+
+
+
+/*******************************
+* MODAL AS LEFT/RIGHT SIDEBAR
+* Add "left" or "right" in modal parent div, after class="modal".
+* Get free snippets on bootpen.com
+*******************************/
+.modal.left .modal-dialog,
+.modal.right .modal-dialog {
+    position: fixed;
+    margin: auto;
+    width: 320px;
+    height: 100%;
+    -webkit-transform: translate3d(0%, 0, 0);
+    -ms-transform: translate3d(0%, 0, 0);
+    -o-transform: translate3d(0%, 0, 0);
+    transform: translate3d(0%, 0, 0);
+}
+
+.modal.left .modal-content,
+.modal.right .modal-content {
+    height: 100%;
+    overflow-y: auto;
+}
+
+.modal.left .modal-body,
+.modal.right .modal-body {
+    padding: 15px 15px 80px;
+}
+
+/*Left*/
+.modal.left.fade .modal-dialog {
+    left: -320px;
+    -webkit-transition: opacity 0.3s linear, left 0.3s ease-out;
+    -moz-transition: opacity 0.3s linear, left 0.3s ease-out;
+    -o-transition: opacity 0.3s linear, left 0.3s ease-out;
+    transition: opacity 0.3s linear, left 0.3s ease-out;
+}
+
+.modal.left.fade.in .modal-dialog {
+    left: 0;
+}
+
+/*Right*/
+.modal.right.fade .modal-dialog {
+    right: -320px;
+    -webkit-transition: opacity 0.3s linear, right 0.3s ease-out;
+    -moz-transition: opacity 0.3s linear, right 0.3s ease-out;
+    -o-transition: opacity 0.3s linear, right 0.3s ease-out;
+    transition: opacity 0.3s linear, right 0.3s ease-out;
+}
+
+.modal.right.fade.in .modal-dialog {
+    right: 0;
+}
+
+/* ----- MODAL STYLE ----- */
+.modal-content {
+    border-radius: 0;
+    border: none;
+}
+
+.modal-header {
+    border-bottom-color: #EEEEEE;
+    background-color: #FAFAFA;
+}
+
+
+
+
+
+.decimalTextbox {
+    text-align: right;
+}
+
+.highlightTextbox {
+    background: #FFC1C1;
+}
+
+
+
+
+
+
+
+
+
+
+.timeline .block {
+    width: 80%;
+}
+
+
+.x_title {
+    margin-top: 5px;
+}
+
+
+ul.timeline li {
+    position: relative;
+    border-bottom: 0px solid #e8e8e8;
+    clear: both;
+}
+
+.timeline .block {
+    margin-left: 170px;
+}
+
+.timeline .tags {
+    width: 150px;
+}
+
+
+.timeline h2.title {
+    margin-top: 10px;
+}
+
+
+@media (min-width: 992px) {
+    .modal-full {
+        width: 80%;
+    }
+}
+
+
+.byline {
+    color: #5a738e;
+}
+
+
+
+#sliderRange .slider-selection {
+    background: #008000;
+}
+
+
+.slider-handle {
+    background-color: #008000!important;
+    /*background-image: -webkit-linear-gradient(top,#337ab7 0,#2e6da4 100%);
+    background-image: -o-linear-gradient(top,#99cc99 0,#4ca64c 100%);*/
+    background-image: linear-gradient(to bottom,#99cc99 0,#4ca64c 100%)!important;
+    
+}
+.site_title {
+   padding-left:0px;
+    text-align: center;
+}
+
+
+.profile_info {
+     padding: 0!important; 
+    
+}
+
+
+.icheckbox_flat-green,
+.iradio_flat-green {  
+    background: url(/images/green.png) no-repeat!important;
+    
+}
+
+section {
+    padding: 12px 0;
+}
+
+
+
+
+/* end */
+
+
+
+
+
+
+
+.btn-toolbar {
+    display: table-header-group;
+}
+
+.data-length {
+}
+
+.pagination-margin {
+    margin-top:-18px;
+    margin-bottom:-5px;
+    float:right;
+}
+
+
+
+th {
+    vertical-align:top!important;
+}
+
+label.selectfloatlabel{
+    position: absolute!important; 
+    top: -1px!important; 
+    transition: all 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms!important; 
+    z-index: 1!important; 
+    transform: scale(0.75) translate(0px, -28px)!important; 
+    transform-origin: left top 0px!important; 
+    pointer-events: none!important; 
+    user-select: none!important; 
+    color: #796AEE!important;
+    font-weight: 300!important;
+    cursor: text!important;
+    font-size: initial!important;
+    left: 0px;
+    margin-top: 2px;
+    
+}
+
+.row {
+    margin-top:5px;
+}
+
+
+.card {
+  margin-bottom: 5px;
+  -webkit-box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.1), -1px 0 2px rgba(0, 0, 0, 0.05);
+  box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.1), -1px 0 2px rgba(0, 0, 0, 0.05);
+}
+
+.card-body{-webkit-box-flex:1;-ms-flex:1 1 auto;flex:1 1 auto;padding:1.25rem;margin-bottom: -22px;}
+.linkbutton {
+    margin-bottom: 0;
+    margin-right: 0;
+    font-size: 12px;
+    padding: 6px 10px 5px 10px;
+    font-weight: 700;
+    margin-top: 1px;
+}
+.card-collasp{
+    padding: .5em;
+}
+ .greybg {
+        background: #e6e6e6 url(images/ui-bg_glass_75_e6e6e6_1x400.png) 50% 50% repeat-x;
+    }

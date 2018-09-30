@@ -1,0 +1,112 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title</title>
+  
+    @RenderSection("styles", required: false)
+
+    <!-- Bootstrap CSS-->
+    <link rel="stylesheet" href="~/html/vendor/bootstrap/css/bootstrap.min.css">
+    <!-- Font Awesome CSS-->
+    <link rel="stylesheet" href="~/html/vendor/font-awesome/css/font-awesome.min.css">
+    <!-- Fontastic Custom icon font-->
+    <link rel="stylesheet" href="~/html/css/fontastic.css">
+    <!-- Google fonts - Poppins -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,700">
+    <!-- theme stylesheet-->
+    <link rel="stylesheet" href="~/html/css/style.default.css" id="theme-stylesheet">
+    <!-- Custom stylesheet - for your changes-->
+    @*<link rel="stylesheet" href="~/html/css/custom.css">*@
+    <link href="~/html/vendor/jquery-toast-plugin/css/jquery.toast.css" rel="stylesheet" />
+    <link href="~/html/vendor/TimePicker/dist/wickedpicker.min.css" rel="stylesheet" />
+    @*<link href="~/Content/custom.css" rel="stylesheet" />*@
+    <script src="~/html/js/jquery-3.2.1.min.js"></script>
+    <link href="~/html/datepicker/bootstrap-datepicker.standalone.min.css" rel="stylesheet" />
+
+    <link rel="stylesheet" href="~/html/css/style.default.css" id="theme-stylesheet">
+    @*<link href="~/Content/custom.css" rel="stylesheet" />*@
+    <link href="~/html/css/custom.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="page">
+        <!-- Main Navbar-->
+        @Html.Partial("~/Views/Shared/_TopHeader.cshtml")
+        <div class="page-content d-flex align-items-stretch">
+            <!-- Side Navbar -->
+            @*@Html.Partial("~/Views/Shared/_SidebarMenu.cshtml")*@
+
+            @RenderBody()
+
+        </div>
+
+    </div>
+
+    @*@Scripts.Render("~/bundles/jquery")
+        @Scripts.Render("~/bundles/bootstrap")*@
+    <!-- Javascript files-->
+  
+    
+    @*<script src="~/html/vendor/popper.js/umd/popper.min.js"> </script>*@
+    <script src="~/html/vendor/bootstrap/js/bootstrap.min.js"></script>
+    <script src="~/html/datepicker/bootstrap-datepicker.min.js"></script>
+  
+    <script src="~/html/vendor/jquery.cookie/jquery.cookie.js"> </script>
+    @*<script src="~/html/vendor/chart.js/Chart.min.js"></script>*@
+    <script src="~/html/vendor/jquery-validation/jquery.validate.min.js"></script>
+    @*<script src="~/html/js/charts-home.js"></script>*@
+    @*<script src="~/html/js/charts-custom.js"></script>*@
+    <script src="~/html/vendor/jquery-toast-plugin/dist/jquery.toast.min.js"></script>
+    <!-- Main File-->
+    <script src="~/html/js/front.js"></script>
+    <script src="~/html/build/js/toastalerts.js"></script>
+
+    <script src="~/html/vendor/TimePicker/src/wickedpicker.js"></script>
+ 
+  
+    @RenderSection("scripts", required: false)
+
+    <script>
+        $(document).ready(function () {
+            //side nav bar manupulations
+    
+            var selectedItem = $('.side-menu > li > a[href*="' + document.location.pathname + '"]');
+            if (selectedItem.length == 0) {
+                selectedItem = $('.child_menu > li > a[href*="' + document.location.pathname + document.location.search + '"]');
+                selectedItem.parent().addClass('active');
+                selectedItem.parent().parent().show();
+                selectedItem.parent().parent().parent().addClass('active');
+            }
+            else {
+                if (selectedItem.length == 2) {
+                    var foo = getParameterByName('Trip');
+                    if (selectedItem[1].innerText == foo) {
+                        $(selectedItem.parent()[1]).addClass('active')
+                    }
+                    else if (selectedItem[0].innerText == foo) {
+                        $(selectedItem.parent()[0]).addClass('active')
+                    }
+                }
+                else {
+                    selectedItem.parent().addClass('active');
+                }
+            }
+            
+          
+        });
+        function getParameterByName(name, url) {
+            if (!url) url = window.location.href;
+            name = name.replace(/[\[\]]/g, "\\$&");
+            var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+                results = regex.exec(url);
+            if (!results) return null;
+            if (!results[2]) return '';
+            return decodeURIComponent(results[2].replace(/\+/g, " "));
+        }
+
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,43 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+
+    <link rel="stylesheet" href="~/html/vendor/bootstrap/css/bootstrap.min.css">
+    <!-- Font Awesome CSS-->
+    <link rel="stylesheet" href="~/html/vendor/font-awesome/css/font-awesome.min.css">
+    <!-- Fontastic Custom icon font-->
+    <link rel="stylesheet" href="~/html/css/fontastic.css">
+    <!-- Google fonts - Poppins -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,700">
+    <!-- theme stylesheet-->
+    <link rel="stylesheet" href="~/html/css/style.default.css" id="theme-stylesheet">
+    <!-- Custom stylesheet - for your changes-->
+    @*<link rel="stylesheet" href="~/html/css/custom.css">*@
+   
+    <!-- Favicon-->
+    <link href="~/Content/custom.css" rel="stylesheet" />
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <link rel="shortcut icon" href="~/html/img/favicon.ico">
+    <link href="~/html/vendor/jquery-toast-plugin/css/jquery.toast.css" rel="stylesheet" />
+</head>
+<body>
+    <div>
+        @RenderBody()
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script src="~/html/vendor/popper.js/umd/popper.min.js"> </script>
+    <script src="~/html/vendor/bootstrap/js/bootstrap.min.js"></script>
+    <script src="~/html/vendor/jquery.cookie/jquery.cookie.js"> </script>
+    <script src="~/html/vendor/chart.js/Chart.min.js"></script>
+    <script src="~/html/vendor/jquery-validation/jquery.validate.min.js"></script>
+
+    <script src="~/html/vendor/jquery-toast-plugin/dist/jquery.toast.min.js"></script>
+    <!-- Main File-->
+    <script src="~/html/js/front.js"></script>
+    <script src="~/html/build/js/toastalerts.js"></script>
+</body>
+</html>

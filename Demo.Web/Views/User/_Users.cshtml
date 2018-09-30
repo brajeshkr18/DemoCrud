@@ -1,0 +1,169 @@
+﻿@model PagedList.IPagedList<TMS.Model.Users.UserViewModel>
+@using PagedList.Mvc;
+@using TMS.Model.Master;
+@using TMS.Model.Users;
+@using TMS.Utility;
+@using TMS.Web.Helper
+@using TMS.Utility.Helper
+@{
+    Layout = null;
+    Qparams qparams = new Qparams();
+    Qparams qparamsCloned = new Qparams();
+    if (TempData["qparams"] != null)
+    {
+        qparams = (Qparams)TempData.Peek("qparams");
+        qparamsCloned = qparams.DeepClone();
+    }
+
+    List<UserTypeViewModel> userTypes = ViewBag.UserTypes as List<UserTypeViewModel>;
+}
+
+ 
+        <table class="table table-striped table-hover"  id="tblDriverList">
+            <thead>
+                <tr>
+                    @{
+                        bool actionrequired = true;
+                        if (qparams.IsProfile == true)
+                        {
+                            actionrequired = false;
+                        }
+                    }
+
+                    @if (actionrequired == true)
+                    {
+                        <th style="width: 15%">Driver</th>
+                        <th style="width: 15%">Email</th>
+                        <th style="width: 10%">Contact</th>
+                        <th style="width: 10%">Year</th>
+                        <th style="width: 10%">Vin No</th>
+                        <th style="width: 10%">Make</th>
+                        <th style="width: 10%">Model</th>
+                        <th style="width: 20%" class="text-center"  id="noExl">Action</th>
+                    }
+                    else
+                    {
+                        <th style="width: 40%">Driver</th>
+                        <th style="width: 17%">Email</th>
+                        <th style="width: 10%">Contact</th>
+                        <th style="width: 10%">Year</th>
+                        <th style="width: 10%">Vin No</th>
+                        <th style="width: 10%">Make</th>
+                        <th style="width: 10%">Model</th>
+                    }
+                </tr>
+            </thead>
+
+            <tbody>
+
+                @foreach (UserViewModel entity in Model)
+                {
+                    qparamsCloned.Id = entity.Id;
+                    qparamsCloned.UserId = entity.Id;
+                    qparamsCloned.AddPermission = true;
+                    qparamsCloned.BackRedirection = true;
+                    qparamsCloned.VehicleId = entity.VehicleId;
+                    qparamsCloned.DriverId = entity.Id;
+
+                    <tr>
+
+                        <td data-title="User">
+                            @entity.FullName
+
+                        </td>
+                        <td data-title="Email" class="wordbreak">@entity.Email</td>
+                        <td data-title="Contact">
+                            @{
+                                string contact = string.IsNullOrWhiteSpace(entity.PhoneNumber) ? "-" : entity.PhoneNumber;
+                            }
+                            @contact
+                        </td>
+                        <td data-title="Email" class="wordbreak">@entity.Year</td>
+                        <td data-title="Email" class="wordbreak">@entity.VINNumber</td>
+                        <td data-title="Email" class="wordbreak">@entity.Make</td>
+                        <td data-title="Email" class="wordbreak">@entity.Model</td>
+                        @*<td data-title="Model" class="wordbreak">@entity.ModelName</td>
+                        <td data-title="Registration No1" class="wordbreak">@entity.RegistrationNo</td>*@
+                        @*<td data-title="Account Status">
+
+                            @if (entity.AccountStatus == (int)Enums.AccountStatus.Active)
+                            {
+                                <div class="text-success">
+                                    <i class="fa fa-check-circle fa-2x" data-original-title="Active" data-toggle="tooltip"></i> Active
+                                </div>
+                            }
+                            else if (entity.AccountStatus == (int)Enums.AccountStatus.Inactive)
+                            {
+                                <div class="text-muted">
+                                    <i class="fa fa-times-circle fa-2x" data-original-title="Inactive: Email for account activation is sent to @entity.FullName, they can activate their account." data-toggle="tooltip"></i> Inactive
+                                </div>
+                            }
+                            else if (entity.AccountStatus == (int)Enums.AccountStatus.Suspended)
+                            {
+                                <div class="text-danger">
+                                    <i class="fa fa-times-circle fa-2x" data-original-title="Suspended" data-toggle="tooltip"></i> Suspended
+                                </div>
+                            }
+                            else if (entity.AccountStatus == (int)Enums.AccountStatus.Deactivated)
+                            {
+                                <div class="text-muted">
+                                    <i class="fa fa-times-circle fa-2x" data-original-title="Deactivated" data-toggle="tooltip"></i> Deactivated
+                                </div>
+                            }
+                        </td>*@
+
+                        @*<td data-title="Last Login" class="text-center">
+                            @if (entity.LastLoginDate == null)
+                            { <span>-</span>}
+                            else
+                            {
+                                <span> @entity.LastLoginDate.Value.ToString("dd MMM yyyy")</span><br />
+                                <span> @entity.LastLoginDate.Value.ToString("hh:mm tt")</span>
+                            }
+                        </td>*@
+
+                        @if (actionrequired == true)
+                        {
+                            <td data-title="Action" class="text-center">
+                                <ul class="list-inline">
+                                    @if (UserAuthenticate.Role == AppConstant.RoleAdmin || UserAuthenticate.Role == AppConstant.RoleEmployee)
+                                    {
+                                        <li>
+                                            @if (qparamsCloned.VehicleId != null)
+                                            {
+                                                <a class="btn btn-outline-info btn-xs linkbutton" href="@Url.Action("VehicleDetails", "Vehicle" ,new {data=SecurityHelper.Encrypt(Newtonsoft.Json.JsonConvert.SerializeObject(qparamsCloned))})" name="edit"><i class="fa fa-edit"></i> Edit vehicle</a>;
+                                            }
+                                            else
+                                            {
+                                                <a class="btn btn-outline-info btn-xs linkbutton" href="@Url.Action("VehicleDetails", "Vehicle" ,new {data=SecurityHelper.Encrypt(Newtonsoft.Json.JsonConvert.SerializeObject(qparamsCloned))})" name="edit"><i class="fa fa-edit"></i> Add vehicle</a>;
+                                            }
+                                            @*@qparamsCloned.Id=@entity.VehicleId*@
+                                           
+                                            @*@qparamsCloned.Id=@entity.Id*@
+                                            <a class="btn btn-outline-info btn-xs linkbutton" href="@Url.Action("UserDetails", "User" ,new {data=SecurityHelper.Encrypt(Newtonsoft.Json.JsonConvert.SerializeObject(qparamsCloned))})" name="edit"><i class="fa fa-edit"></i> Edit</a>&nbsp;
+                                            @*<a onclick="DeleteUser('qBiGYsRcBB+aooxj6H4nxg==','Test')" class="btn btn-danger btn-xs linkbutton"><i class="fa fa-trash-o"></i> Delete </a>*@
+                                            <a class="btn btn-outline-danger btn-xs linkbutton" data-target="#basic" data-toggle="modal" data-id="@entity.Id" name="accountStatusItem" href="#">
+                                                <i class="fa fa-trash-o"></i> Delete
+                                            </a>
+
+                                        </li>
+                                    }
+                                </ul>
+                            </td>
+                        }
+                    </tr>
+                                }
+            </tbody>
+        </table>
+    
+
+
+    @if (Model.Count == 0)
+    {
+        <div style="text-align: center" class="text-danger"><span>No Record Found</span></div>
+    }
+
+    <div class="pull-right">
+        @Html.PagedListPager(Model, page => Url.Action("ManageUsers", new { page, sortOrder = ViewBag.CurrentSort, pageSize = ViewBag.PageSize, data = SecurityHelper.Encrypt(Newtonsoft.Json.JsonConvert.SerializeObject(qparams)) }))
+    </div>
+

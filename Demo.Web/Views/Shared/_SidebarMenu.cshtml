@@ -1,0 +1,52 @@
+﻿
+
+<nav class="side-navbar">
+    <!-- Sidebar Header-->
+    <div class="sidebar-header d-flex align-items-center" style="padding-bottom: 0px;">
+        <div @*class="avatar"*@>
+            @*<img src="@Url.Content("/Home/GetImage?id=" + Convert.ToInt64(UserAuthenticate.LogId) + "&imageType=" + (int)Enums.ImageType.UserProfile + "&mediaFor="  + (int)Enums.MediaFor.UserProfile)" alt="..." class="img-fluid rounded-circle">*@
+            @*<img src="~/html/img/avatar-1.jpg" alt="..." class="img-fluid rounded-circle">*@
+        </div>
+        <div class="">
+        
+            <h3 class="h4">Test</h3>
+            <p></p>
+        </div>
+        @*<div class="title">
+            <img src="~/html/images/logo.png" style="width: 50%;"/>
+            <h1 class="h4">@UserAuthenticate.UserName</h1>
+            <p>@UserAuthenticate.UserType</p>
+        </div>*@
+    </div>
+    
+    <div id="dialog"></div>
+</nav>
+<script>
+$(document).ready(function(){
+  //$('.dropdown-submenu a.test').on("click", function(e){
+  //  $(this).next('ul').toggle();
+  //  e.stopPropagation();
+  //  e.preventDefault();
+  //});
+
+ 
+  //$.ajax({
+  //    type: "GET",
+  //    url: "/ManageRole/GetUserRoleAccessMenu",
+  //    data: {  roleId: 1},
+  //    contentType: "application/json; charset=utf-8",
+  //    dataType: "html",
+  //    success: function (response) {
+  //        $('#dialog').html(response);
+
+  //    },
+  //    failure: function (response) {
+  //        alert(response.responseText);
+  //    },
+  //    error: function (response) {
+  //        alert(response.responseText);
+  //    }
+  //});
+});
+
+</script>

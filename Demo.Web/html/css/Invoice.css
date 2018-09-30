@@ -1,0 +1,62 @@
+﻿ .novice-preview {
+        font-family: Arial;
+        font-size: 14px;
+    }
+
+    .table-section {
+        width: 100%;
+        margin-top: 10px;
+        border: 1px solid #000;
+    }
+
+    table tr td {
+        padding: 3px;
+    }
+
+    .table-section {
+        width: 100%;
+        margin-top: 10px;
+        margin-bottom: 10px;
+        border: 1px solid #000;
+    }
+
+        .table-section td, .table-section th {
+            border: 1px solid #dee2e6;
+            padding: 6px;
+        }
+
+        .table-section input {
+            text-align: center;
+            border: none;
+        }
+
+    .two-part {
+        width: 50%;
+        float: left;
+        padding: 5px;
+    }
+
+    .no-border td {
+        border: 1px solid #fff;
+    }
+
+        .no-border td:nth-child(01) {
+            border-right: 1px solid #dee2e6;
+        }
+
+    .width100 {
+        width: 100%;
+    }
+
+    .width50 {
+        width: 50%;
+    }
+
+    .width25 {
+        width: 25%;
+    }
+
+    input {
+        height: 34px;
+        width: 100%;
+    }

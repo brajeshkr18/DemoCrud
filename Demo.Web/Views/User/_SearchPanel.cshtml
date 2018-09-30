@@ -1,0 +1,64 @@
+﻿@using TMS.Utility;
+@using TMS.Model.Master;
+@using TMS.Model.Users;
+@{
+    Layout = null;
+
+    Qparams qparams = new Qparams();
+    if (TempData["qparams"] != null)
+    {
+        qparams = (Qparams)TempData.Peek("qparams");
+    }
+}
+<style>
+
+</style>
+<div class="container">
+    <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+            <form class="form-horizontal" role="form">
+                <div class="form-group">
+                    <label for="contain">Driver Name</label>
+                    <input class="form-control" type="text" placeholder="Driver Name" id="name" name="searchField" />
+                </div>
+
+                <div class="form-group">
+                    <label for="contain">Driver Email</label>
+                    <input class="form-control" type="text" placeholder="Driver Email" id="email" name="searchField" />
+                </div>
+
+                @*@{
+                    var userTypes = ViewBag.UserTypes as List<UserTypeViewModel>;
+                    if (userTypes != null && userTypes.Count > 0)
+                    {
+                        <div class="form-group">
+                            <label for="contain">User Type</label>
+
+                            @Html.DropDownList("UserType", new SelectList(@ViewBag.UserTypes, "Id", "Name"), "-- Select User Type --", new { @class = "form-control scrollable-menu", @name = "searchField" })
+                        </div>
+                    }
+                }*@
+
+                @*@if (qparams.AccountStatus == null)
+                {
+
+                    <div class="form-group">
+                        <label for="contain">Account Status</label>
+                        @{
+                            var enumList = TMS.Utility.Helper.CommonHelper.GetListFromEnum<Enums.AccountStatus>();
+                            @Html.DropDownList("AccountStatus", new SelectList(enumList, "Value", "KeyDescription"), "-- Select Account Status --", new { @class = "form-control scrollable-menu", @name = "searchField" })
+                        }
+                    </div>
+                            }*@
+
+                <button type="button" class="btn btn-warning btn-sm" id="reset" data-dismiss="modal">
+                    <span class="glyphicon glyphicon-refresh"></span> Reset
+                </button>
+                <button type="button" class="btn btn-primary btn-sm" id="search" data-dismiss="modal">
+                    <span class="glyphicon glyphicon-search"></span> Search
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+

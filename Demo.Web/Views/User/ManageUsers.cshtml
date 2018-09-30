@@ -1,0 +1,264 @@
+﻿@model PagedList.IPagedList<TMS.Model.Users.UserViewModel>
+@using TMS.Model.Master;
+@using TMS.Model.Users;
+@using TMS.Utility.Helper
+@using TMS.Web.Helper
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Manage Drivers";
+    Qparams qparams = new Qparams();
+    Qparams qparamsCloned = new Qparams();
+    if (TempData["qparams"] != null)
+    {
+        qparams = (Qparams)TempData.Peek("qparams");
+        qparamsCloned = qparams.DeepClone();
+        qparamsCloned.Id = null;
+    }
+}
+<link href="~/Scripts/TableExport/css/tableexport.min.css" rel="stylesheet" />
+<link href="~/Content/custom.css" rel="stylesheet" />
+<style>
+
+</style>
+<!-- page content -->
+<div class="content-inner">
+    <!-- Page Header-->
+    <header class="page-header">
+        <div class="container-fluid">
+            <h2 class="no-margin-bottom">@ViewBag.Title</h2>
+        </div>
+
+    </header>
+    <section class="tables">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <div style="float:right;">
+                                <button class="btn btn-primary" id="btnExport">Download </button>
+                                <a href="@Url.Action("UserDetails", "User", new { data = SecurityHelper.Encrypt(Newtonsoft.Json.JsonConvert.SerializeObject(qparamsCloned)) })" class="btn btn-primary" data-toggle="tooltip" data-original-title="Add New Driver"><i class="fa fa-plus"></i>Add</a>
+                                <button data-target="#searchModel" data-toggle="modal" type="button" class="btn btn-default"><span class="icon-search" aria-hidden="true"></span></button>
+                            </div>
+                            <div class="clearfix"></div>
+                            <div id="ListData" class="table-responsive ResponsiveTable">
+                                @{Html.RenderPartial("_Users", Model);}
+                            </div>
+                                <div class="pull-left">
+                                    <label>
+                                        Show <select name="lengthSelect" id="lengthSelect" aria-controls="example" class="dropdown">
+                                            <option value="10" selected="selected">10</option>
+                                            <option value="25">25</option>
+                                            <option value="50" >50</option>
+                                            <option value="100">100</option>
+                                            <option value="500">500</option>
+                                        </select> entries
+                                    </label>
+                                </div>
+                            </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <div id="progressDiv" class="loader"></div>
+</div>
+
+
+
+<div class="modal " id="basic" tabindex="-1" aria-hidden="true" style="display: none;">
+
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 id="exampleModalLabel" class="modal-title">Delete Confirmation !</h4>
+                <button type="button" data-dismiss="modal" aria-label="Close" class="close"><span aria-hidden="true">×</span></button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to delete this driver's information ?</p>
+            </div>
+            <div class="modal-footer">
+                <button data-dismiss="modal" type="button" id="cancel" class="btn btn-secondary">Cancel</button>
+                <button id="btnDeleteItem" type="button" class="btn btn-danger" data-dismiss="modal">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal right fade" id="searchModel" tabindex="-1" role="dialog"  style="right:-976px" aria-labelledby="myModal4Label" aria-hidden="true">
+    <div class="modal-dialog" style="position:relative">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel2">Search</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                @Html.Partial("_SearchPanel")
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal " id="accountActivation" tabindex="-1" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 id="exampleModalLabel" class="modal-title">Confirmation !</h4>
+                <button type="button" data-dismiss="modal" aria-label="Close" class="close"><span aria-hidden="true">×</span></button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to activate this account?</p>
+            </div>
+            <div class="modal-footer">
+                <button data-dismiss="modal" type="button" id="cancel" class="btn btn-secondary">Cancel</button>
+                <button id="btnAccActivateItem" type="button" class="btn btn-primary" data-dismiss="modal">Activate</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal " id="accountDeactivation" tabindex="-1" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 id="exampleModalLabel" class="modal-title">Confirmation !</h4>
+                <button type="button" data-dismiss="modal" aria-label="Close" class="close"><span aria-hidden="true">×</span></button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to deactivate this account?</p>
+            </div>
+            <div class="modal-footer">
+                <button data-dismiss="modal" type="button" id="cancel" class="btn btn-secondary">Cancel</button>
+                <button id="btnAccdeactivateItem" type="button" class="btn btn-primary" data-dismiss="modal">Deactivate</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal " id="accountSuspend" tabindex="-1" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 id="exampleModalLabel" class="modal-title">Confirmation !</h4>
+                <button type="button" data-dismiss="modal" aria-label="Close" class="close"><span aria-hidden="true">×</span></button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to suspend this account?</p>
+            </div>
+            <div class="modal-footer">
+                <button data-dismiss="modal" type="button" id="cancel" class="btn btn-secondary">Cancel</button>
+                <button id="btnAccSuspendItem" type="button" class="btn btn-primary" data-dismiss="modal">Suspend</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal" id="changePasswordModel" tabindex="-1" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 id="exampleModalLabel" class="modal-title">Change Password</h4>
+                <button type="button" data-dismiss="modal" aria-label="Close" class="close"><span aria-hidden="true">×</span></button>
+            </div>
+            <div class="modal-body">
+                <form role="form">
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="text" disabled="" class="form-control content" id="lblEmail" />
+                    </div>
+
+
+                    <div class="form-group">
+                        <label>Password</label>
+                        <input type="password" name="Password" id="Password" class="form-control" placeholder="Password" title="Invalid Password" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\da-zA-Z]).{8,15}$" />
+
+                    </div>
+
+                    <div class="form-group">
+                        <label>Confirm Password</label>
+                        <input type="password" id="ConfirmPassword" class="form-control" placeholder="Confirm Password" />
+                    </div>
+                    <div>
+                        <button data-dismiss="modal" type="button" id="cancel" class="btn btn-secondary">Cancel</button>
+                        <button id="btnChangePassword" type="button" class="btn btn-primary">Submit</button>
+                    </div>
+                </form>
+            </div>
+
+            <div class="modal-footer">
+                @*<label class="control-label">Note: </label>*@
+                <ul>
+                    <b>Note:</b>
+
+                    <li><span>Password Must contain at least one digit</span></li>
+                    <li><span>Password Must contain at least one uppercase and one lower character</span></li>
+                    <li><span>Password Must contain at least one special symbol</span></li>
+                    <li><span>Password Length at least 8 characters and also maximum of 15</span></li>
+                </ul>
+
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /page content -->
+
+@section scripts{
+    @Scripts.Render("~/bundles/validations/js")
+    @Scripts.Render("~/bundles/jqueryval")
+@*@Scripts.Render("~/bundles/export")*@
+<script src="~/html/js/jquery.table2excel.min.js"></script>
+@*<script src="//cdn.rawgit.com/rainabba/jquery-table2excel/1.1.0/dist/jquery.table2excel.min.js"></script>*@
+    <script src="~/html/build/ApplicationJS/Users.js"></script>
+
+    <script type="text/javascript">
+        function GetQparams() {
+            return '@SecurityHelper.Encrypt(Newtonsoft.Json.JsonConvert.SerializeObject(qparams))';
+        }
+        function GetLocationPath() {
+            return '@Url.Action("ManageUsers", "User", new { data = SecurityHelper.Encrypt(Newtonsoft.Json.JsonConvert.SerializeObject(qparams)) })';
+        }
+        function GetStatusValue(name) {
+            var allStatus = @Html.Raw(Json.Encode(CommonHelper.GetListFromEnum<TMS.Utility.Enums.AccountStatus>()));
+            for (i = 0; i < allStatus.length; i++) {
+                if (name == allStatus[i].Key)
+                    return allStatus[i].Value;
+            }
+
+        }
+        $("#btnExport").click(function () {
+           
+            $("#tblDriverList").remove("#noExl").table2excel({
+                filename: "DriverList.xls",
+                exclude: ".noExl",
+                name: "DriverList",
+                    columns: []
+            });
+        });
+        //$(document).ready(function () {
+        //    search();
+        //});
+
+    </script>
+    @if (TempData["result"] != null)
+    {
+        MyJsonResult result = TempData["result"] as MyJsonResult;
+
+        if (result.isSuccess == true)
+        {
+            <script>
+                $.toastAlert("Success", "@result.message", "success");
+            </script>
+        }
+        else
+        {
+            <script>
+                $.toastAlert("Error", "@result.message", "error");
+            </script>
+        }
+
+        var resultData = @TempData.Remove("result");
+    }
+
+}

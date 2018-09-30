@@ -1,0 +1,537 @@
+﻿@model TMS.Model.Users.UserViewModel
+@using TMS.Utility
+@using TMS.Model.Master
+@using TMS.Model.Users  
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "User Profile";
+    Qparams qparams = new Qparams();
+    if (TempData["qparams"] != null)
+    {
+        qparams = (Qparams)TempData.Peek("qparams");
+    }
+}
+<head>
+    @Styles.Render("~/Content/KendoDatepicker")
+
+    <style>
+        customDisabled {
+            cursor: not-allowed;
+        }
+
+        .panel-footer {
+            padding-bottom: 22px;
+        }
+    </style>
+    <style>
+        body {
+            background: #F1F3FA;
+        }
+
+        /* Profile container */
+        .profile {
+            margin: 20px 0;
+        }
+
+        /* Profile sidebar */
+        .profile-sidebar {
+            padding: 20px 0 10px 0;
+            background: #fff;
+        }
+
+        .profile-userpic img {
+            float: none;
+            margin: 0 auto;
+            width: 50%;
+            height: 50%;
+            -webkit-border-radius: 50% !important;
+            -moz-border-radius: 50% !important;
+            border-radius: 50% !important;
+        }
+
+        .profile-usertitle {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .profile-usertitle-name {
+            color: #2a3f54;
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 7px;
+        }
+
+        .profile-usertitle-job {
+            text-transform: uppercase;
+            color: #5b9bd1;
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .profile-userbuttons {
+            text-align: center;
+            margin-top: 10px;
+        }
+
+            .profile-userbuttons .btn {
+                text-transform: uppercase;
+                font-size: 11px;
+                font-weight: 600;
+                padding: 6px 15px;
+                margin-right: 5px;
+            }
+
+                .profile-userbuttons .btn:last-child {
+                    margin-right: 0px;
+                }
+
+        .profile-usermenu {
+            margin-top: 30px;
+        }
+
+            .profile-usermenu ul li {
+                border-bottom: 1px solid #f0f4f7;
+            }
+
+                .profile-usermenu ul li:last-child {
+                    border-bottom: none;
+                }
+
+                .profile-usermenu ul li a {
+                    color: #93a3b5;
+                    font-size: 14px;
+                    font-weight: 400;
+                }
+
+                    .profile-usermenu ul li a i {
+                        margin-right: 8px;
+                        font-size: 14px;
+                    }
+
+                    .profile-usermenu ul li a:hover {
+                        background-color: #fafcfd;
+                        color: #5b9bd1;
+                    }
+
+                .profile-usermenu ul li.active {
+                    border-bottom: none;
+                }
+
+                    .profile-usermenu ul li.active a {
+                        color: #5b9bd1;
+                        background-color: #f6f9fb;
+                        border-left: 2px solid #5b9bd1;
+                        margin-left: -2px;
+                    }
+
+        /* Profile Content */
+        .profile-content {
+            padding: 16px 16px 0 16px;
+            background: #fff;
+            overflow: hidden;
+        }
+
+            .profile-content h2 {
+                font-size: 21px;
+                background: #2a3f54;
+                padding: 9px;
+                color: #fff;
+                margin: 0;
+            }
+
+                .profile-content h2 a {
+                    color: #fff;
+                    float: right;
+                }
+
+                    .profile-content h2 a:hover {
+                        text-decoration: none;
+                        color: #0080ff;
+                    }
+    </style>
+</head>
+<div class="right_col" role="main">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="page-title">
+            <div class="title_left">
+                <h3>@ViewBag.Title</h3>
+            </div>
+            <div class="x_content">
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                @using (Html.BeginForm("UserProfileInfo", "User", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form", enctype = "multipart/form-data" }))
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.HiddenFor(model => model.Id)
+                    @Html.HiddenFor(model => model.ReportingTo, new { id = "hdnReportingTo" })
+                    @Html.HiddenFor(model => model.UserTypeId)
+                    @*@Html.HiddenFor(model => model.UserMembership.DateOfBirth, new { @id = "hdnStartDate" })*@
+                    @Html.HiddenFor(model => model.Email)
+                    @Html.HiddenFor(model => model.WorkPhone)
+                    @*@Html.HiddenFor(model => model.ProfilePhoto)*@
+                    @Html.HiddenFor(model => model.UserTypes.Name)
+                    @Html.HiddenFor(model => model.UserDetails.Gender, new { @id = "hdnGender" })
+
+                    <div class="">
+                        <div class="clearfix"></div>
+                        <div class="row">
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                <div class="x_panel">
+                                    <div class="x_content">
+                                        <div class="container">
+                                            <div class="row">
+                                                <div class="col-md-3">
+                                                    <div class="profile-sidebar">
+                                                        <!-- SIDEBAR USERPIC -->
+                                                        <div class="profile-userpic">
+                                                            @*@if (Model != null && Model.ProfilePhoto != null)
+                                                            {
+                                                                <div class="">
+                                                                    <img id="uploadProfilePhoto" data-original-title="Change Profile Pic" data-toggle="tooltip" name="uploadProfilePhoto" style="cursor:pointer" class="img-responsive" src="data:image/png;base64,@Convert.ToBase64String(Model.ProfilePhoto)" />
+                                                                </div>
+                                                            }
+                                                            else
+                                                            {
+                                                                <div class="">
+                                                                    <img id="uploadProfilePhoto" data-original-title="Change Profile Pic" data-toggle="tooltip" style="cursor:pointer" name="uploadProfilePhoto" cursor:pointer" src="~/images/user.png" class="img-responsive" />
+                                                                </div>
+                                                            }*@
+                                                            <div class="col-md-3 col-sm-3 col-xs-12">
+                                                                <input type="file" name="imageProfilePhoto" id="imageProfilePhoto" style="display:none" onchange="fileCheck(this);" class="btn btn-warning" />
+                                                            </div>
+                                                        </div>
+                                                        <!-- END SIDEBAR USERPIC -->
+                                                        <!-- SIDEBAR USER TITLE -->
+                                                        <div class="profile-usertitle">
+                                                            <div class="profile-usertitle-name"> @Model.FirstName @Model.LastName </div>
+                                                            <div class="profile-usertitle-job">@Model.UserTypes.Name </div>
+                                                        </div>
+                                                        <!-- END SIDEBAR USER TITLE -->
+                                                        <!-- SIDEBAR MENU -->
+                                                        <div class="profile-usermenu">
+                                                            <ul class="nav">
+                                                                <li>
+                                                                    <a><i class="fa fa-phone" data-original-title="Personal Contact Number" data-toggle="tooltip"></i>Mobile No.: @Model.PhoneNumber</a>
+                                                                </li>
+                                                                <li>
+                                                                    <a><i class="fa fa-phone" data-original-title="Office Contact Number" data-toggle="tooltip"></i>Office No.: @Model.WorkPhone</a>
+                                                                </li>
+                                                                <li>
+                                                                    <a><i class="fa fa-envelope" data-original-title="Email" data-toggle="tooltip"></i>Email: @Model.Email</a>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-9">
+                                                    <div class="profile-content">
+                                                        <h2 class="panel panel-primary">Personal Info <a href="#" class="glyphicon glyphicon-edit modify" id="ancPersonalInfo" data-original-title="Edit Personal Info" data-toggle="tooltip"><i class="fa fa-edit"></i></a></h2>
+                                                        <div class="col-md-12 col-lg-12 ">
+                                                            <div class="panel-body">
+                                                                <div id="dvPersonalInfoDisplay">
+                                                                    @if (Model != null && Model.Id > 0)
+                                                                    {
+                                                                        <table class="table table-user-information">
+                                                                            <tbody>
+                                                                                <tr>
+                                                                                    <td style="width:35%">Name :</td>
+                                                                                    <td style="width:55%">@Model.FullName</td>
+                                                                                </tr>
+                                                                                <tr>
+
+                                                                                    <td style="width:35%">Gender :</td>
+                                                                                    @if (Model.UserDetails.Gender != null)
+                                                                                    {
+                                                                                        <td style="width:55%">@Enum.GetName(typeof(Enums.Gender), Model.UserDetails.Gender)</td>
+                                                                                    }
+                                                                                    else
+                                                                                    {
+                                                                                        <td style="width:55%">---</td>
+                                                                                    }
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td style="width:35%">Date Of Birth :</td>
+                                                                                    @if (Model.UserDetails.DateOfBirth != null)
+                                                                                    {
+                                                                                        <td style="width:55%">@Model.UserDetails.DateOfBirth.Value.ToLongDateString()</td>
+                                                                                    }
+                                                                                    else
+                                                                                    {
+                                                                                        <td style="width:55%">---</td>
+                                                                                    }
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td style="width:35%">Address Line 1 :</td>
+                                                                                    <td style="width:55%">@Model.UserDetails.CurAddress1</td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td style="width:35%">Address Line 2 :</td>
+                                                                                    <td style="width:55%">@Model.UserDetails.CurAddress2</td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                <tr>
+                                                                                    <td style="width:35%">Zip Code :</td>
+                                                                                    <td style="width:55%">@Model.UserDetails.CurZipCode</td>
+                                                                                </tr>
+                                                                            </tbody>
+                                                                        </table>
+                                                                    }
+                                                                </div>
+                                                                <div id="dvPersonalInfoUpdate" style="display:none;">
+                                                                    <div class="row">
+                                                                        <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
+                                                                            @Html.LabelFor(model => model.FirstName, htmlAttributes: new { @class = "control-label" })
+                                                                        </div>
+                                                                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                                                                            @Html.TextBoxFor(x => x.FirstName, new { @class = "form-control", @Id = "FirstName" })
+                                                                            @Html.ValidationMessageFor(m => m.FirstName, "", new { @class = "text-danger" })
+                                                                        </div>
+                                                                        <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
+                                                                            @Html.LabelFor(model => model.LastName, htmlAttributes: new { @class = "control-label" })
+                                                                        </div>
+                                                                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                                                                            @Html.TextBoxFor(x => x.LastName, new { @class = "form-control" })
+                                                                            @Html.ValidationMessageFor(m => m.LastName, "", new { @class = "text-danger" })
+                                                                        </div>
+                                                                    </div>
+                                                                    <br />
+                                                                    <div class="row">
+                                                                        <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
+                                                                            @*@Html.LabelFor(model => model.UserMembership.DateOfBirth, htmlAttributes: new { @class = "control-label" })*@
+                                                                            <label class="control-label">Date of Birth *</label>
+                                                                        </div>
+                                                                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                                                                            @{
+                                                                                string dob = string.Empty;
+                                                                                if (Model.UserDetails.DateOfBirth != null)
+                                                                                {
+                                                                                    dob = Model.UserDetails.DateOfBirth.Value.ToString("dd MMMM yyyy");
+                                                                                }
+                                                                            }
+                                                                            @Html.TextBoxFor(x => x.UserDetails.DateOfBirth, new { @class = "datepicker", @id = "datepicker", @title = "datepicker", @Value = @dob })
+                                                                            @Html.ValidationMessageFor(model => model.UserDetails.DateOfBirth, "", new { @class = "text-danger" })
+                                                                        </div>
+                                                                        <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
+                                                                            @Html.LabelFor(model => model.UserDetails.Gender, htmlAttributes: new { @class = "control-label" })
+                                                                        </div>
+                                                                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                                                                            <div class="buying-selling-group" id="buying-selling-group" data-toggle="buttons">
+                                                                                @if (Model.UserDetails.Gender == Enums.Gender.Male.GetHashCode())
+                                                                                {
+                                                                                    <label class="btn btn-default buying-selling active">
+                                                                                        <input type="radio" name="GenderGroup" id="option1" autocomplete="off" value="@Enums.Gender.Male.GetHashCode()">
+                                                                                        <span class="radio-dot"></span>
+                                                                                        <span class="buying-selling-word">Male</span>
+                                                                                    </label>
+
+                                                                                    <label class="btn btn-default buying-selling">
+                                                                                        <input type="radio" name="GenderGroup" id="option2" autocomplete="off" value="@Enums.Gender.Female.GetHashCode()">
+                                                                                        <span class="radio-dot"></span>
+                                                                                        <span class="buying-selling-word">Female</span>
+                                                                                    </label>}
+                                                                                else if (Model.UserDetails.Gender == Enums.Gender.Female.GetHashCode())
+                                                                                {
+                                                                                    <label class="btn btn-default buying-selling">
+                                                                                        <input type="radio" name="GenderGroup" id="option1" autocomplete="off" value="@Enums.Gender.Male.GetHashCode()">
+                                                                                        <span class="radio-dot"></span>
+                                                                                        <span class="buying-selling-word">Male</span>
+                                                                                    </label>
+
+                                                                                    <label class="btn btn-default buying-selling active">
+                                                                                        <input type="radio" name="GenderGroup" id="option2" autocomplete="off" value="@Enums.Gender.Female.GetHashCode()">
+                                                                                        <span class="radio-dot"></span>
+                                                                                        <span class="buying-selling-word">Female</span>
+                                                                                    </label>}
+                                                                                else
+                                                                                {
+                                                                                    <label class="btn btn-default buying-selling">
+                                                                                        <input type="radio" name="GenderGroup" id="option1" autocomplete="off" value="@Enums.Gender.Male.GetHashCode()">
+                                                                                        <span class="radio-dot"></span>
+                                                                                        <span class="buying-selling-word">Male</span>
+                                                                                    </label>
+
+                                                                                    <label class="btn btn-default buying-selling">
+                                                                                        <input type="radio" name="GenderGroup" id="option2" autocomplete="off" value="@Enums.Gender.Female.GetHashCode()">
+                                                                                        <span class="radio-dot"></span>
+                                                                                        <span class="buying-selling-word">Female</span>
+                                                                                    </label>}
+
+                                                                            </div>
+
+                                                                            @*@Html.RadioButtonFor(model => model.UserMembership.Gender, Enums.Gender.Male.GetHashCode()) Male
+                                                                                @Html.RadioButtonFor(model => model.UserMembership.Gender, Enums.Gender.Female.GetHashCode()) Female*@
+                                                                            @Html.ValidationMessageFor(model => model.UserDetails.Gender, "", new { @class = "text-danger" })
+                                                                        </div>
+                                                                    </div>
+                                                                    <br />
+                                                                    <div class="row">
+                                                                        <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
+                                                                            @Html.LabelFor(model => model.UserDetails.CurAddress1, htmlAttributes: new { @class = "control-label" })
+                                                                        </div>
+                                                                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                                                                            @Html.TextBoxFor(x => x.UserDetails.CurAddress1, new { @class = "form-control", @Id = "FirstName" })
+                                                                            @Html.ValidationMessageFor(m => m.UserDetails.CurAddress1, "", new { @class = "text-danger" })
+                                                                        </div>
+                                                                        <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
+                                                                            @Html.LabelFor(model => model.UserDetails.CurAddress2, htmlAttributes: new { @class = "control-label" })
+                                                                        </div>
+                                                                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                                                                            @Html.TextBoxFor(x => x.UserDetails.CurAddress2, new { @class = "form-control" })
+                                                                            @Html.ValidationMessageFor(m => m.UserDetails.CurAddress2, "", new { @class = "text-danger" })
+                                                                        </div>
+                                                                    </div>
+                                                                    <br />
+                                                                    <div class="row">
+                                                                        <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
+                                                                            @Html.LabelFor(model => model.PhoneNumber, htmlAttributes: new { @class = "control-label" })
+                                                                        </div>
+                                                                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                                                                            @Html.TextBoxFor(x => x.PhoneNumber, new { @class = "form-control" })
+                                                                            @Html.ValidationMessageFor(m => m.PhoneNumber, "", new { @class = "text-danger" })
+                                                                        </div>
+                                                                        <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
+                                                                            @Html.LabelFor(model => model.UserDetails.CurZipCode, htmlAttributes: new { @class = "control-label" })
+                                                                        </div>
+                                                                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                                                                            @Html.TextBoxFor(x => x.UserDetails.CurZipCode, new { @class = "form-control", @maxlength = 6, @minlength = 6 })
+                                                                            @Html.ValidationMessageFor(m => m.UserDetails.CurZipCode, "", new { @class = "text-danger" })
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <hr />
+                                            <div class="row" style="display:none;" id="idBtns">
+                                                <div class="text-right">
+                                                    <input type="button" value="Cancel" class="btn btn-warning btn-sm" id="btnCancel" style="font-weight:bold;" />
+                                                    <input type="submit" value="Update" class="btn btn-primary btn-sm " id="btnUpdate" style="font-weight:bold;" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                                                                                }
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts{
+    @Scripts.Render("~/bundles/validations/js")
+    @Scripts.Render("~/bundles/jqueryval")
+
+
+    @*<script src="~/html/vendors/kendo/js/jquery.min.js"></script>*@
+    <script src="~/html/vendors/kendo/js/kendo.all.min.js"></script>
+    @if (TempData["result"] != null)
+    {
+        MyJsonResult result = TempData["result"] as MyJsonResult;
+
+        if (result.isSuccess == true)
+        {
+            <script>
+                $.toastAlert("Success", "@result.message", "success");
+            </script>
+        }
+        else
+        {
+            <script>
+                $.toastAlert("Error", "@result.message", "Error");
+            </script>
+        }
+
+        var resultData = @TempData.Remove("result");
+    }
+    <script>
+        $(document).ready(function () {
+            $(".loader").fadeOut("slow");
+            $('input[type=radio][name=GenderGroup]').change(function () {
+                $('#hdnGender').val(this.value);
+            });
+
+        })
+        $(document).ready(function () {
+            $(".datepicker").kendoDatePicker({
+                // defines the start view
+                start: "day",
+                // defines when the calendar should return date
+                depth: "year",
+                // display month and year in the input
+                format: "dd MMMM yyyy",
+                // specifies that DateInput is used for masking the input element
+                dateInput: true
+            });
+
+
+            //$('.form_date').datetimepicker({
+            //    language: 'en',
+            //    weekStart: 1,
+            //    todayBtn: 1,
+            //    autoclose: 1,
+            //    todayHighlight: 1,
+            //    startView: 2,
+            //    minView: 2,
+            //    forceParse: false,
+            //    pickerPosition: 'bottom-left',
+            //});
+        });
+        $("#uploadProfilePhoto").click(function () {
+            HideControls();
+            $("#idBtns").show();
+            $("#imageProfilePhoto").trigger('click');
+        });
+
+        $("#ancPersonalInfo").click(function () {
+            HideControls();
+            $("#dvPersonalInfoUpdate").show();
+            $("#idBtns").show();
+            $("#dvPersonalInfoDisplay").hide();
+        });
+
+        //$("#ancAddressInfo").click(function () {
+        //    HideControls();
+        //    $("#dvPersonalInfoDisplay").show();
+        //    $("#dvAddressInfoDisplay").hide();
+        //    $("#dvAddressInfoUpdate").show();
+        //    $("#idBtns").show();
+        //});
+
+        $("#btnCancel").click(function () {
+            HideControls();
+            //signalrHub.server.send(true);
+        })
+
+        function HideControls() {
+            $("#idBtns").hide();
+            $("#dvPersonalInfoUpdate").hide();
+            $("#dvPersonalInfoDisplay").show();
+        }
+        function fileCheck(obj) {
+            var fileExtension = ['jpeg', 'jpg', 'png', 'gif', 'bmp'];
+            if ($.inArray($(obj).val().split('.').pop().toLowerCase(), fileExtension) == -1) {
+                $.toastAlert("Error", "Only '.jpeg','.jpg', '.png', '.gif', '.bmp' formats are allowed.", "error");
+            }
+            else {
+                if (document.getElementById("imageProfilePhoto").files[0]) {
+                    var oFReader = new FileReader();
+                    oFReader.readAsDataURL(document.getElementById("imageProfilePhoto").files[0]);
+
+                    oFReader.onload = function (oFREvent) { document.getElementById("uploadProfilePhoto").src = oFREvent.target.result; };
+                }
+            }
+        }
+
+        //function changeDate() {
+        //    if ($('#hdnStartDate').val() !== undefined && $('#hdnStartDate').val() !== "") {
+        //        $("#dobValidationMessage").hide();
+        //    }
+        //}
+
+    </script>
+
+}

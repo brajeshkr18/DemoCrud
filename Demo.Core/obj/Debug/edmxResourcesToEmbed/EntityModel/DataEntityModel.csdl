@@ -1,0 +1,118 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="TransportManagementSystemModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityContainer Name="TransportManagementSystemEntities" annotation:LazyLoadingEnabled="false">
+    <EntitySet Name="tblStores" EntityType="TransportManagementSystemModel.tblStore" />
+    <EntitySet Name="tblProductSolds" EntityType="TransportManagementSystemModel.tblProductSold" />
+    <AssociationSet Name="FK__tblProduc__Store__44FF419A" Association="TransportManagementSystemModel.FK__tblProduc__Store__44FF419A">
+      <End Role="tblStore" EntitySet="tblStores" />
+      <End Role="tblProductSold" EntitySet="tblProductSolds" />
+    </AssociationSet>
+    <EntitySet Name="tblCustomers" EntityType="TransportManagementSystemModel.tblCustomer" />
+    <EntitySet Name="tblProducts" EntityType="TransportManagementSystemModel.tblProduct" />
+    <AssociationSet Name="FK__tblProduc__Custo__22AA2996" Association="TransportManagementSystemModel.FK__tblProduc__Custo__22AA2996">
+      <End Role="tblCustomer" EntitySet="tblCustomers" />
+      <End Role="tblProductSold" EntitySet="tblProductSolds" />
+    </AssociationSet>
+    <AssociationSet Name="FK__tblProduc__Produ__239E4DCF" Association="TransportManagementSystemModel.FK__tblProduc__Produ__239E4DCF">
+      <End Role="tblProduct" EntitySet="tblProducts" />
+      <End Role="tblProductSold" EntitySet="tblProductSolds" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="tblStore">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="false" />
+    <Property Name="Address" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+    <Property Name="IsActive" Type="Boolean" Nullable="false" />
+    <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="ModifiedDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="CreatedBy" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="ModifiedBy" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="tblProductSolds" Relationship="TransportManagementSystemModel.FK__tblProduc__Store__44FF419A" FromRole="tblStore" ToRole="tblProductSold" />
+  </EntityType>
+  <EntityType Name="tblProductSold">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ProductId" Type="Int64" Nullable="false" />
+    <Property Name="CustomerId" Type="Int64" Nullable="false" />
+    <Property Name="StoreId" Type="Int64" Nullable="false" />
+    <Property Name="DateSold" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="IsActive" Type="Boolean" Nullable="false" />
+    <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="ModifiedDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="CreatedBy" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="ModifiedBy" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="tblStore" Relationship="TransportManagementSystemModel.FK__tblProduc__Store__44FF419A" FromRole="tblProductSold" ToRole="tblStore" />
+    <NavigationProperty Name="tblCustomer" Relationship="TransportManagementSystemModel.FK__tblProduc__Custo__22AA2996" FromRole="tblProductSold" ToRole="tblCustomer" />
+    <NavigationProperty Name="tblProduct" Relationship="TransportManagementSystemModel.FK__tblProduc__Produ__239E4DCF" FromRole="tblProductSold" ToRole="tblProduct" />
+  </EntityType>
+  <Association Name="FK__tblProduc__Store__44FF419A">
+    <End Type="TransportManagementSystemModel.tblStore" Role="tblStore" Multiplicity="1" />
+    <End Type="TransportManagementSystemModel.tblProductSold" Role="tblProductSold" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tblStore">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="tblProductSold">
+        <PropertyRef Name="StoreId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="tblCustomer">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="false" />
+    <Property Name="Age" Type="Int32" />
+    <Property Name="Address" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="false" />
+    <Property Name="IsActive" Type="Boolean" Nullable="false" />
+    <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="ModifiedDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="CreatedBy" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="ModifiedBy" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="tblProductSolds" Relationship="TransportManagementSystemModel.FK__tblProduc__Custo__22AA2996" FromRole="tblCustomer" ToRole="tblProductSold" />
+  </EntityType>
+  <EntityType Name="tblProduct">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="false" />
+    <Property Name="Price" Type="Int32" />
+    <Property Name="IsActive" Type="Boolean" Nullable="false" />
+    <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="ModifiedDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="CreatedBy" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="ModifiedBy" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="tblProductSolds" Relationship="TransportManagementSystemModel.FK__tblProduc__Produ__239E4DCF" FromRole="tblProduct" ToRole="tblProductSold" />
+  </EntityType>
+  <Association Name="FK__tblProduc__Custo__22AA2996">
+    <End Type="TransportManagementSystemModel.tblCustomer" Role="tblCustomer" Multiplicity="1" />
+    <End Type="TransportManagementSystemModel.tblProductSold" Role="tblProductSold" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tblCustomer">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="tblProductSold">
+        <PropertyRef Name="CustomerId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__tblProduc__Produ__239E4DCF">
+    <End Type="TransportManagementSystemModel.tblProduct" Role="tblProduct" Multiplicity="1" />
+    <End Type="TransportManagementSystemModel.tblProductSold" Role="tblProductSold" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tblProduct">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="tblProductSold">
+        <PropertyRef Name="ProductId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>

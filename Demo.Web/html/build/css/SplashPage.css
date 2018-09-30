@@ -1,0 +1,62 @@
+﻿@charset "utf-8";
+/* CSS Document */
+
+
+.clear{ clear:both;}
+span{ display:table-cell; vertical-align:middle;}
+.header-section{ background:#60a9ef; padding:10px; overflow:hidden;}
+.price-display{ background:#8d901e; color:#000; height:80px; display:inline-block; width:80px; border-top-left-radius:50%; border-top-right-radius:0%; border-bottom-right-radius:50%;
+    border-bottom-left-radius:0%; float:right; margin-top:4px; margin-right:9px;}
+.price-display strong{ padding:24px 0; display:inline-block; font-size:31px; text-shadow:1px 2px 1px #000000; color:#fff; }
+.banner-content { background: rgba( 255, 255, 255, .9); color:#000; padding:5px 10px; border-radius:7px; cursor:pointer }
+.banner-content p{ padding:0px; margin:0px;}
+.banner-content strong{ font-weight:bold; text-transform:uppercase; font-size:19px;}
+
+
+.price-display60{ background:#8d901e; color:#000; height:60px; display:inline-block; width:60px; border-top-left-radius:50%; border-top-right-radius:50%; border-bottom-right-radius:50%;
+ border-bottom-left-radius:50%; float:right; margin-top:0px; margin-right:9px;}
+.price-display60 strong{ padding:13px 0; display:inline-block; font-size:26px; text-shadow:1px 2px 1px #000000; color:#fff; }
+
+.spacecontainer{ width:1170px; margin:auto;}
+.header-section .logo{float:left;}
+.banner728x90{ width:728px; height:90px; cursor:pointer; background:#1a76a0; text-align:center; float:right; vertical-align:middle; display:table; color:#fff; border:1px dashed #fff; box-shadow:1px 3px 1px #232222; background:url(/images/background3.jpg) left bottom no-repeat; }
+.map-section img{ width:100%;}
+.body-section-add{ float:left; width:100%; margin-top:20px;}
+.banner468x60_left{ width:468px; height:60px; background:#105675; text-align:center; float:left; vertical-align:middle; display:table; border:1px dashed #fff; box-shadow:1px 3px 1px #232222; 
+color:#fff; background:url(/images/background3.jpg) left center no-repeat;}
+.banner468x60_right{ width:468px; height:60px; background:#105675; text-align:center; float:right; vertical-align:middle; display:table; border:1px dashed #fff; box-shadow:1px 3px 1px #232222; color:#fff; background:url(/images/background3.jpg) left bottom no-repeat;}
+.banner300x600{width:300px; height:600px; background:#ccc; text-align:center; float:left; vertical-align:middle; display:table; margin-right:11px;  background:url(/images/background1.jpg) left bottom no-repeat;}
+.banner300x600 label{ margin-top:247px; display:block; margin-left:12px; cursor:pointer}
+.mid-ad-section{ float:left; width:555px;}
+/*.video-ad{ width:100%; height:342px; margin-bottom:4px;}*/
+.video-ad{width:560px; height:342px; background:#ccc; text-align:center; float:left; vertical-align:middle; display:table; margin-right:11px;margin-bottom:4px;  background:url(/images/background1.jpg) left bottom no-repeat;}
+.video-ad label{ margin-top:120px; display:inline-block; margin-left:12px; cursor:pointer}
+.price-display-video{ background:#8d901e; color:#000; height:80px; display:inline-block; width:80px; border-top-left-radius:50%; border-top-right-radius:0%; border-bottom-right-radius:50%;
+    border-bottom-left-radius:0%;margin-top:4px; margin-right:9px;cursor:pointer}
+.price-display-video strong{ padding:24px 0; display:inline-block; font-size:31px; text-shadow:1px 2px 1px #000000; color:#fff; }
+.mid-section-banner-ad{ width:100%;}
+.banner300x250{width:300px; height:250px; background:#ccc; text-align:center; float:left; vertical-align:middle; display:table; cursor:pointer;  background:url(/images/background1.jpg) left top no-repeat; }
+.banner250x250{width:250px; height:250px; background:#ccc; text-align:center; float:right; vertical-align:middle; display:table; cursor:pointer; background:url(/images/background1.jpg) right top no-repeat;}
+.right-ad-section{ float:right;}
+.banner120x600{width:120px; height:600px; background:#ccc; text-align:center; float:left; vertical-align:middle; display:table; margin-right:7px; background:url(/images/background1.jpg) left bottom no-repeat}
+.banner160x600{width:160px; height:600px; background:#ccc; text-align:center; float:left; vertical-align:middle; display:table; background:url(/images/background1.jpg) left bottom no-repeat}
+.footer-ad{ background:#cbdde8; margin:10px 0; padding:10px 0; float:left; width:100%;}
+
+.footer-section{ text-align:center; padding-bottom:10px;}
+
+.banner336x280{width:336px; height:280px; background:#ccc; text-align:center; vertical-align:middle; display:table; background:url(/images/background1.jpg) center center no-repeat; border:1px dashed #fff; box-shadow:1px 3px 1px #232222;}
+.nbs-flexisel-item p{ line-height:50px;}
+.nbs-flexisel-item .banner336x280 label{ padding-top:10px;}
+.nbs-flexisel-item .price-display strong{ padding:42px 0;}
+.nbs-flexisel-item .banner-content { background: rgba( 255, 255, 255, .9); color:#000; padding:10px; border-radius:7px; }
+.banner728x90 label, .banner468x60_left label, .banner468x60_right label {display:initial; cursor:pointer}
+
+.banner300x600 .price-display, .banner120x600 .price-display, .banner160x600 .price-display, .banner300x250 .price-display, .banner250x250 .price-display, .banner160x600 .price-display, .banner336x280 .price-display { float:inherit; margin-top:22px; cursor:pointer }
+
+.banner120x600 label, .banner160x600 label { margin-top:150px; display:block; margin-left:0px;}
+
+
+
+
+
+

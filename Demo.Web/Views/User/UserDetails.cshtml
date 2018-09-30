@@ -1,0 +1,651 @@
+﻿@model TMS.Model.Users.UserViewModel
+@using TMS.Web.Helper
+@using TMS.Utility
+@using TMS.Model.Master;
+@using TMS.Model.Users;
+@using System.Collections.Generic
+@using TMS.Utility.Helper
+
+@{
+    ViewBag.Title = "User Detail";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    UserTypeViewModel userType = null;
+    Qparams qparams = new Qparams();
+    if (TempData["qparams"] != null)
+    {
+        qparams = (Qparams)TempData.Peek("qparams");
+    }
+
+    List<UserTypeViewModel> userTypes = ViewBag.UserTypes as List<UserTypeViewModel>;
+    if (userTypes != null && userTypes.Count == 1)
+    {
+        userType = userTypes.SingleOrDefault();
+        ViewBag.Title = "Manage " + userType.Name;
+    }
+
+
+}
+<style>
+    .greybg {
+        
+    }
+       .amount-text-dollor { position:absolute; top:10px;left: 0px;}
+    .amount-text{ padding-left:20px!important;}
+</style>
+<div class="content-inner">
+    <!-- Page Header-->
+    <header class="page-header">
+        <div class="container-fluid">
+            <h2 class="no-margin-bottom">@ViewBag.Title</h2>
+        </div>
+    </header>
+    <!-- Forms Section-->
+    <section class="forms">
+        <div class="container-fluid">
+            <div class="row">
+                <!-- Form Elements -->
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    @using (Html.BeginForm("UserDetails", "User", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        @Html.HiddenFor(model => model.Id)
+                        @*@Html.HiddenFor(model => model.VehicleId)*@
+                    if (Model != null)
+                    {
+                        @Html.Hidden("hdnReportingTo", Model.ReportingTo)
+                    }
+                   
+
+
+                    <div class="card">
+                        <div class="card-header d-flex align-items-center">
+                            <h3 class="h4">Basic Detail</h3>
+                        </div>
+                        <div class="card-body">
+                                @if (userType != null)
+                                {
+                                    @Html.HiddenFor(model => model.UserTypeId, new { @class = "control-label", Value = userType.Id })
+                                }
+                                else
+                                {
+                                    <div class="form-group-material">
+                                        @Html.LabelFor(model => model.UserTypeId, htmlAttributes: new { @class = "control-label col-md-3 col-sm-3 col-xs-12" })
+                                        <div class="col-md-6 col-sm-6 col-xs-12">
+                                            @Html.DropDownListFor(x => x.UserTypeId, new SelectList(@ViewBag.UserTypes, "Id", "Name"), "-- Select User Type --", new { @class = "form-control scrollable-menu", @onchange = "GetReportingConfig()" })
+                                            @Html.ValidationMessageFor(m => m.UserTypeId, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>                            
+                                }
+
+
+                                <div class="form-group row">
+                                    <div class="col-sm-12">
+                                        <div class="row">
+                                            <div class="col-md-6 col-sm-6 col-xs-6">
+                                                @Html.TextBoxFor(x => x.FirstName, new { @class = "input-material" })
+                                                @Html.LabelFor(model => model.FirstName, htmlAttributes: new { @class = "label-material" })
+                                                @Html.ValidationMessageFor(m => m.FirstName, "", new { @class = "text-danger" })
+                                            </div>
+                                            <div class="col-md-6 col-sm-6 col-xs-6">
+                                                @Html.TextBoxFor(x => x.LastName, new { @class = "input-material" })
+                                                @Html.LabelFor(model => model.LastName, htmlAttributes: new { @class = "label-material" })
+                                                @Html.ValidationMessageFor(m => m.LastName, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
+                                <div class="form-group row">
+                                    @*<label class="col-sm-3 form-control-label">Column sizing</label>*@
+                                    <div class="col-sm-12">
+                                        <div class="row">
+                                            @if (Model == null || Model.Id == 0)
+                                            {
+                                                <div class="col-md-6 col-sm-6 col-xs-6">
+                                                    @Html.TextBoxFor(x => x.Email, new { @class = "input-material" })
+                                                    @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "label-material" })
+                                                    @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+                                                </div>
+                                                <div class="col-md-6 col-sm-6 col-xs-6">
+                                                    @Html.TextBoxFor(x => x.PhoneNumber, new { @class = "input-material", @maxlength = 10 })
+                                                    @Html.LabelFor(model => model.PhoneNumber, htmlAttributes: new { @class = "label-material" })
+                                                    @Html.ValidationMessageFor(m => m.PhoneNumber, "", new { @class = "text-danger" })
+                                                </div>
+                                            }
+                                            else
+                                            {
+
+                                                <div class="col-md-6 col-sm-6 col-xs-6">
+                                                    @Html.TextBoxFor(x => x.Email, new { @class = "input-material", @readonly = "readonly" })
+                                                    @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "label-material" })
+                                                    @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+                                                </div>
+                                                <div class="col-md-6 col-sm-6 col-xs-6">
+                                                    @Html.TextBoxFor(x => x.PhoneNumber, new { @class = "input-material", @maxlength = 10 })
+                                                    @Html.LabelFor(model => model.PhoneNumber, htmlAttributes: new { @class = "label-material" })
+                                                    @Html.ValidationMessageFor(m => m.PhoneNumber, "", new { @class = "text-danger" })
+                                                </div>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    @*<label class="col-sm-3 form-control-label">Column sizing</label>*@
+                                    <div class="col-sm-12">
+                                        <div class="row">
+                                            <div class="col-md-6 col-sm-6 col-xs-6">
+                                                @Html.TextBoxFor(x => x.CountryCode, new { @class = "input-material", @maxlength = 10 })
+                                                @Html.LabelFor(model => model.CountryCode, htmlAttributes: new { @class = "label-material" })
+                                                @Html.ValidationMessageFor(m => m.CountryCode, "", new { @class = "text-danger" })
+                                            </div>
+                                            <div class="col-md-6 col-sm-6 col-xs-6">
+                                                @Html.TextBoxFor(x => x.UserDetails.CurAddress1, new { @class = "input-material" })
+                                                @Html.LabelFor(model => model.UserDetails.CurAddress1, htmlAttributes: new { @class = "label-material" })
+                                                @Html.ValidationMessageFor(m => m.UserDetails.CurAddress1, "", new { @class = "text-danger" })
+                                            </div>
+                                            @*<div class="col-md-6">
+                                                    @Html.TextBoxFor(x => x.UserDetails.CurAddress1, new { @class = "input-material" })
+                                                    @Html.LabelFor(model => model.UserDetails.CurAddress1, htmlAttributes: new { @class = "label-material" })
+                                                    @Html.ValidationMessageFor(m => m.UserDetails.CurAddress1, "", new { @class = "text-danger" })
+                                                </div>*@
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                @*<div class="form-group-material">
+                                        @Html.TextBoxFor(x => x.PhoneNumber, new { @class = "input-material", @maxlength = 10 })
+                                        @Html.LabelFor(model => model.PhoneNumber, htmlAttributes: new { @class = "label-material" })
+                                        @Html.ValidationMessageFor(m => m.PhoneNumber, "", new { @class = "text-danger" })
+                                    </div>
+                                    <div class="form-group-material">
+                                        @Html.TextBoxFor(x => x.WorkPhone, new { @class = "input-material", @maxlength = 10 })
+                                        @Html.LabelFor(model => model.WorkPhone, htmlAttributes: new { @class = "label-material" })
+                                        @Html.ValidationMessageFor(m => m.WorkPhone, "", new { @class = "text-danger" })
+                                    </div>*@
+                                @*@if (Model == null || Model.Id == 0)
+                                    {
+                                        <div class="form-group-material">
+                                            @Html.PasswordFor(x => x.Password, new { @class = "input-material" })
+                                            @Html.LabelFor(model => model.Password, htmlAttributes: new { @class = "label-material" })
+                                            @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+                                        </div>
+
+                                        <div class="form-group-material">
+                                            @Html.PasswordFor(model => model.ConfirmPassword, new { @class = "input-material" })
+                                            @Html.LabelFor(model => model.ConfirmPassword, htmlAttributes: new { @class = "label-material" })
+                                            @Html.ValidationMessageFor(model => model.ConfirmPassword, "", new { @class = "text-danger" })
+                                        </div>
+                                    }*@
+
+                                @*<div class="ln_solid"></div>*@
+                                @*<div>
+                                        <div class="form-group-material">
+                                            <a href="@Url.Action("ManageUsers", "User", new { data = SecurityHelper.Encrypt(Newtonsoft.Json.JsonConvert.SerializeObject(qparams)) })" class="btn btn-secondary" name="Cancel">Cancel</a>
+                                            <button id="save" type="submit" class="btn btn-primary" name="submitButton">Save</button>
+                                        </div>
+                                    </div>*@
+
+                            
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header d-flex align-items-center">
+                            <h3 class="h4">Payment Detail</h3>
+                        </div>
+                        <div class="card-body">
+                                <div class="form-group row">
+                                    <div class="col-sm-12">
+                                        <div class="row">
+                                            <div class="col-md-6 col-sm-6 col-xs-6">
+                                                <span class="amount-text-dollor">$</span>
+                                                @Html.TextBoxFor(x => x.UserDetails.CostPerMile, new { @class = "input-material" })
+                                                @Html.LabelFor(model => model.UserDetails.CostPerMile, htmlAttributes: new { @class = "label-material" })
+                                                @Html.ValidationMessageFor(m => m.UserDetails.CostPerMile, "", new { @class = "text-danger" })
+                                            </div>
+                                            <div class="col-md-6 col-sm-6 col-xs-6">
+                                                <span class="amount-text-dollor">$</span>
+                                                @Html.TextBoxFor(x => x.UserDetails.CostPerMinute, new { @class = "input-material", @maxlength = 50 })
+                                                @Html.LabelFor(model => model.UserDetails.CostPerMinute, htmlAttributes: new { @class = "label-material" })
+                                                @Html.ValidationMessageFor(m => m.UserDetails.CostPerMinute, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            <div class="ln_solid"></div>
+                            <div>
+                                <div class="form-group-material">
+                                    <a href="@Url.Action("ManageUsers", "User", new { data = SecurityHelper.Encrypt(Newtonsoft.Json.JsonConvert.SerializeObject(qparams)) })" class="btn btn-secondary" name="Cancel">Cancel</a>
+                                    <button id="save" type="submit" class="btn btn-primary" name="submitButton">Save</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                        if (Model != null)
+                        {
+                            if (Model.Id != 0)
+                            {
+                                <div class="card" id="accordionPerformanceHistory">
+                                    <div class="card-header d-flex align-items-center greybg">
+                                        <div class="h4"><i class="fa fa-chevron-down"></i> Trip History(By default One Week)</div>
+                                    </div>
+                                   
+                                    <div class="card-body accordionPerformanceHistory" @*style="display:none"*@>
+                                        <div class="form-group row">
+                                            <div class="col-sm-4">
+                                                <div class="row"></div>
+                                            </div>
+                                            <div class="col-sm-8">
+                                                <div class="row">
+                                                    <div class="col-md-5 col-sm-6 col-xs-6">
+                                                        <input class="form-control datepicker" type="text" placeholder="From" id="txtFrom" name="searchField" />
+                                                    </div>
+                                                    <div class="col-md-5 col-sm-6 col-xs-6">
+                                                        <input class="form-control datepicker" type="text" placeholder="To" id="txtTo" name="searchField" />
+                                                    </div>
+                                                    <div class="col-md-2 col-sm-2 col-xs-6">
+                                                        <button type="button" class="btn btn-primary btn-sm" id="btnsubmit">
+                                                            <span class="glyphicon glyphicon-refresh"></span> Submit
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                            <div id="dvpartialtable">
+                                                @{Html.RenderPartial("_DriverPerformanceList", Model.WeeklyPerformanceList);}
+                                            </div>
+                                           
+                                        </div>
+                                    </div>
+                                </div>
+                           }
+                        }
+                                                if (Model != null)
+                                                {
+                                                    if (Model.Id != 0)
+                                                    {
+
+                                <div class="card" id="accordionDriverHistory">
+                                    <div class="card-header d-flex align-items-center greybg">
+                                        <div class="h4"><i class="fa fa-chevron-down"></i> Driver History</div>
+                                    </div>
+                                    <div class="card-body accordionDriverHistory" @*style="display:none"*@>
+                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                            @{Html.RenderPartial("_DriverHistory", Model.DriverHistory);}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                                        }
+                                                    }
+                                                }
+                </div>
+             
+            </div>
+            <br />
+        </div>
+    </section>
+    <footer class="main-footer" style="padding-top:44px;">
+        <div class="container-fluid">
+            <div class="row">
+                @*<div class="col-sm-6">
+                        <p>Transport Management System © 2017-2019</p>
+                    </div>
+                    <div class="col-sm-6 text-right">
+                        Designed by <a href="#" class="external">Transport Management System</a>
+
+                    </div>*@
+            </div>
+        </div>
+    </footer>
+</div>
+
+
+@section scripts{
+    @Scripts.Render("~/bundles/validations/js")
+    @Scripts.Render("~/bundles/jqueryval")
+    @*<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css">
+        <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>*@
+    <!-- for colapsible panel-->
+    @*<link href="~/Content/jquery-ui.css" rel="stylesheet" />
+    <script src="~/Scripts/jquery-ui.js"></script>*@
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $(".loader").fadeOut("slow");
+            $("form").validate();            // <- INITIALIZES PLUGIN
+
+            $(document).on("click", "#save", function () {
+                if ($("form").valid() == true) {
+                    $(".loader").fadeOut("slow");
+                    $(":submit").submit();
+                }
+            });
+
+            //GetReportingConfig();
+
+            $(document).on("click", "#btnRemoveRegion", function () {
+                $("#AssignedRegionId").val(null);
+                $("#AssignedRegionName").val("");
+
+            });
+
+            $(document).on("click", "#selectRegion", function () {
+                if ($("#Region option:selected").val() && $("#Region option:selected").val() != "") {
+                    $("#AssignedRegionId").val($("#Region option:selected").val());
+                    $("#AssignedRegionName").val($("#Region option:selected").text());
+                }
+                else {
+                    $("#AssignedRegionId").val(null);
+                    $("#AssignedRegionName").val("");
+                }
+
+            });
+            //$('#accordionDriverHistory').click(function () {
+            //    $(this).find('.accordionDriverHistory').toggle();
+            //});
+            //$('#accordionPerformanceHistory').click(function () {
+            //    $(this).find('.accordionPerformanceHistory').toggle();
+            //});
+          
+           
+        });
+        function FillState() {
+            var id = $('#Country').val();
+            if (id == "") {
+                $("#State").html(""); // clear before appending new list
+                $("#City").html(""); // clear before appending new list
+                $("#Region").html(""); // clear before appending new list
+
+                $("#State").append($('<option></option>').val("").html("--- Select State ---"));
+                $("#City").append($('<option></option>').val("").html("--- Select City ---"));
+                $("#Region").append($('<option></option>').val("").html("--- Select Region ---"));
+
+                return;
+            }
+            $.ajax({
+                url: '/Home/GetStates?countryId=' + id,
+                type: "GET",
+                dataType: "JSON",
+                success: function (states) {
+                    $("#State").html(""); // clear before appending new list
+                    $("#State").append($('<option></option>').val("").html("--- Select State ---"));
+
+                    $.each(states, function (i, state) {
+                        $("#State").append(
+                            $('<option></option>').val(state.Id).html(state.Name));
+                    });
+                    if (states.length > 0)
+                    { FillCities(); }
+                }
+            });
+        }
+
+        function FillCities() {
+            var id = $('#State').val();
+            var countryId = $('#Country').val();
+
+            if (id == "") {
+                $("#City").html(""); // clear before appending new list
+                $("#Region").html(""); // clear before appending new list
+
+                $("#City").append($('<option></option>').val("").html("--- Select City ---"));
+                $("#Region").append($('<option></option>').val("").html("--- Select Region ---"));
+                return;
+            }
+
+            $.ajax({
+                url: '/Home/GetCities?stateId=' + id + "&countryId=" + countryId,
+                type: "GET",
+                dataType: "JSON",
+                success: function (cities) {
+                    $("#City").html(""); // clear before appending new list
+                    $("#City").append($('<option></option>').val("").html("--- Select City ---"));
+                    $.each(cities, function (i, city) {
+                        $("#City").append(
+                            $('<option></option>').val(city.Id).html(city.Name));
+                    });
+                }
+            });
+        }
+
+        function FillRegion() {
+            var id = $('#City').val();
+            if (id == "") {
+                $("#Region").html(""); // clear before appending new list
+                $("#Region").append($('<option></option>').val("").html("--- Select Region ---"));
+                return;
+            }
+
+            $.ajax({
+                url: '/Home/GetRegions?cityId=' + id,
+                type: "GET",
+                dataType: "JSON",
+                success: function (results) {
+                    $("#Region").html(""); // clear before appending new list
+                    $("#Region").append($('<option></option>').val("").html("--- Select Region ---"));
+                    $.each(results, function (i, result) {
+                        $("#Region").append(
+                            $('<option></option>').val(result.Id).html(result.Name));
+                    });
+                }
+            });
+        }
+
+        function GetReportingConfig() {
+            var userTypeId = $('#UserTypeId').val();
+            $("#lblRMMsg").hide();
+            $.ajax({
+                url: '/User/GetReportingTo?addingUserTypeId=' + userTypeId,
+                type: "GET",
+                dataType: "JSON",
+                success: function (results) {
+                    $("#itemRM").hide();
+                    $("#itemreporting").hide();
+
+                    if (results.isSuccess == true) {
+
+                        var requiredUserTypes = [];
+                        requiredUserTypes = results.message.split(',');
+                        var dataBind = false;
+
+                        if (requiredUserTypes.length == 1 && requiredUserTypes[0] == "RM") {
+                            $("#itemreporting").show();
+                            if (dataBind == false) {
+                                $("#drpreporting").html(""); // clear before appending new list
+                                $("#drpreporting").append($('<option></option>').val("").html("--- Select Regional Manager ---"));
+                                $.each(results.data, function (i, result) {
+                                    $("#drpreporting").append(
+                                        $('<option></option>').val(result.Id).html(result.FirstName));
+                                });
+                            }
+
+                            if ($('#hdnReportingTo').val() && $('#hdnReportingTo').val() !== "") {
+                                if ($("#drpreporting option[value='" + $('#hdnReportingTo').val() + "']").length > 0) {
+                                    $('#drpreporting').val($('#hdnReportingTo').val());
+                                }
+                            }
+
+                        }
+                        else {
+                            $.each(requiredUserTypes, function (i, requiredUserType) {
+                                if (requiredUserType === "RM") {
+                                    dataBind = true;
+                                    $("#itemRM").show();
+                                    $("#drpRM").html(""); // clear before appending new list
+                                    $("#drpRM").append($('<option></option>').val("").html("--- Select Regional Manager ---"));
+                                    $.each(results.data, function (i, result) {
+                                        $("#drpRM").append(
+                                            $('<option></option>').val(result.Id).html(result.FirstName));
+                                    });
+
+                                    if ($('#hdnReportingTo').val() && $('#hdnReportingTo').val() !== "") {
+                                        if ($("#drpRM option[value='" + $('#hdnReportingTo').val() + "']").length > 0) {
+                                            $('#drpRM').val($('#hdnReportingTo').val());
+                                        }
+                                    }
+                                    $("#itemreporting").hide();
+                                }
+
+                                if (requiredUserType === "SM") {
+                                    $("#itemreporting").show();
+                                    if (dataBind == false) {
+                                        $("#drpreporting").html(""); // clear before appending new list
+                                        $("#drpreporting").append($('<option></option>').val("").html("--- Select Sales Manager ---"));
+                                        $.each(results.data, function (i, result) {
+                                            $("#drpreporting").append(
+                                                $('<option></option>').val(result.Id).html(result.FirstName));
+                                        });
+                                    }
+                                    else {
+                                        $("#drpreporting").html(""); // clear before appending new list
+                                        $("#lblRMMsg").show();
+                                    }
+
+                                    if ($('#Id').val() && $('#Id').val() !== "") {
+                                        FillSM();
+                                    }
+
+                                    if ($('#hdnReportingTo').val() && $('#hdnReportingTo').val() !== "") {
+                                        if ($("#drpreporting option[value='" + $('#hdnReportingTo').val() + "']").length > 0) {
+                                            $('#drpreporting').val($('#hdnReportingTo').val());
+                                        }
+                                    }
+
+                                }
+
+                                if (requiredUserType === "ADMIN") {
+                                    $("#itemreporting").show();
+                                    if (dataBind == false) {
+                                        $("#drpreporting").html(""); // clear before appending new list
+                                        $("#drpreporting").append($('<option></option>').val("").html("--- Select Admin ---"));
+                                        $.each(results.data, function (i, result) {
+                                            $("#drpreporting").append(
+                                                $('<option></option>').val(result.Id).html(result.FirstName));
+                                        });
+                                    }
+                                    if ($('#hdnReportingTo').val() && $('#hdnReportingTo').val() !== "") {
+                                        if ($("#drpreporting option[value='" + $('#hdnReportingTo').val() + "']").length > 0) {
+                                            $('#drpreporting').val($('#hdnReportingTo').val());
+                                        }
+                                    }
+                                }
+
+
+                            });
+                        }
+
+
+                    }
+                }
+            });
+        }
+
+        function FillRM() {
+            var userId = $('#drpADMIN').val();
+            var userTypeCode = "RM";
+            $.ajax({
+                url: '/User/GetUsers?userId=' + userId + "&userTypeCode=" + userTypeCode,
+                type: "GET",
+                dataType: "JSON",
+                success: function (results) {
+                    $("#drpRM").html(""); // clear before appending new list
+                    $("#drpRM").append($('<option></option>').val("").html("--- Select Regional Manager ---"));
+                    $.each(results, function (i, result) {
+                        $("#drpRM").append(
+                         $('<option></option>').val(result.Id).html(result.FirstName));
+                    });
+
+                    if ($('#hdnReportingTo').val() && $('#hdnReportingTo').val() !== "") {
+                        if ($("#drpRM option[value='" + $('#hdnReportingTo').val() + "']").length > 0) {
+                            $('#drpRM').val($('#hdnReportingTo').val());
+                        }
+                    }
+                }
+            });
+        }
+        function FillSM() {
+            var userId = $('#drpRM').val();
+            var userTypeCode = "SM";
+            $.ajax({
+                url: '/User/GetUsers?userId=' + userId + "&userTypeCode=" + userTypeCode,
+                type: "GET",
+                dataType: "JSON",
+                success: function (results) {
+                    $("#drpreporting").html(""); // clear before appending new list
+                    $("#drpreporting").append($('<option></option>').val("").html("--- Select Sales Manager ---"));
+                    $.each(results, function (i, result) {
+                        $("#drpreporting").append(
+                         $('<option></option>').val(result.Id).html(result.FirstName));
+                    });
+
+                    if ($('#hdnReportingTo').val() && $('#hdnReportingTo').val() !== "") {
+                        if ($("#drpreporting option[value='" + $('#hdnReportingTo').val() + "']").length > 0) {
+                            $('#drpreporting').val($('#hdnReportingTo').val());
+                        }
+                    }
+                }
+            });
+        }
+
+    </script>
+<script>
+    $(document).ready(function () {
+        $('.datepicker').datepicker({
+            format: 'd M yyyy'
+        });
+        var url = '@Url.Action("RenderPartialDriverPerformance", "User")';
+        $('#btnsubmit').click(function () {
+       
+            var from = $('#txtFrom').val();
+            var to = $('#txtTo').val();
+            var DriverId =$("#Id").val()
+            //$('#searchResults').load(url, { startDate: from, endDate: to });
+            $.ajax({
+                type: "GET", //HTTP GET Method
+                url: "/User/RenderPartialDriverPerformance", // Controller/View
+                data: {
+                    startDate: from,
+                    endDate: to,
+                    DriverId: DriverId
+                },
+                datatype: "json", // refer notes below
+                success: function (data) {
+                    fillListData(data);
+                },
+                error: function (jqXHR, status, err) {//status is Error and the errorThrown is undefined
+                    //$.toastAlert("Error", "Request Status : " + jqXHR.status + " has issued a status text of  : " + jqXHR.statusText + "", "error");
+                }
+            });
+        })
+    });
+    function fillListData(result) {
+        $('#dvpartialtable').html(result);
+
+    }
+</script>
+    @if (TempData["result"] != null)
+    {
+        MyJsonResult result = TempData["result"] as MyJsonResult;
+
+        if (result.isSuccess == true)
+        {
+            <script>
+                $.toastAlert("Success", "@result.message", "success");
+            </script>
+        }
+        else
+        {
+            <script>
+                $.toastAlert("Error", "@result.message", "error");
+            </script>
+        }
+
+        var resultData = @TempData.Remove("result");
+    }
+}

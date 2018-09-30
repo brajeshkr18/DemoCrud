@@ -1,0 +1,13 @@
+E:\Project\DemoApp\Demo.Core\bin\Debug\Demo.Core.dll.config
+E:\Project\DemoApp\Demo.Core\bin\Debug\Demo.Core.dll
+E:\Project\DemoApp\Demo.Core\bin\Debug\Demo.Core.pdb
+E:\Project\DemoApp\Demo.Core\bin\Debug\EntityFramework.dll
+E:\Project\DemoApp\Demo.Core\bin\Debug\EntityFramework.SqlServer.dll
+E:\Project\DemoApp\Demo.Core\bin\Debug\Newtonsoft.Json.dll
+E:\Project\DemoApp\Demo.Core\bin\Debug\EntityFramework.xml
+E:\Project\DemoApp\Demo.Core\bin\Debug\EntityFramework.SqlServer.xml
+E:\Project\DemoApp\Demo.Core\bin\Debug\Newtonsoft.Json.xml
+E:\Project\DemoApp\Demo.Core\obj\Debug\Demo.Core.csproj.CoreCompileInputs.cache
+E:\Project\DemoApp\Demo.Core\obj\Debug\Demo.Core.csproj.CopyComplete
+E:\Project\DemoApp\Demo.Core\obj\Debug\Demo.Core.dll
+E:\Project\DemoApp\Demo.Core\obj\Debug\Demo.Core.pdb

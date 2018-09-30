@@ -1,0 +1,9 @@
+H:\DemoApp\Demo.Utility\bin\Debug\Demo.Utility.dll
+H:\DemoApp\Demo.Utility\bin\Debug\Demo.Utility.pdb
+H:\DemoApp\Demo.Utility\bin\Debug\Newtonsoft.Json.dll
+H:\DemoApp\Demo.Utility\bin\Debug\Newtonsoft.Json.xml
+H:\DemoApp\Demo.Utility\obj\Debug\Demo.Utility.csprojAssemblyReference.cache
+H:\DemoApp\Demo.Utility\obj\Debug\Demo.Utility.csproj.CoreCompileInputs.cache
+H:\DemoApp\Demo.Utility\obj\Debug\Demo.Utility.csproj.CopyComplete
+H:\DemoApp\Demo.Utility\obj\Debug\Demo.Utility.dll
+H:\DemoApp\Demo.Utility\obj\Debug\Demo.Utility.pdb

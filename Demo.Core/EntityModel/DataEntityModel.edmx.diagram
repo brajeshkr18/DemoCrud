@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="59c38954b3e64318bbe40b2ea4ad77b5" Name="Diagram1" ZoomLevel="97">
+        <EntityTypeShape EntityType="TransportManagementSystemModel.tblStore" Width="1.5" PointX="4.75" PointY="0.75" />
+        <EntityTypeShape EntityType="TransportManagementSystemModel.tblProductSold" Width="1.5" PointX="7" PointY="0.75" />
+        <AssociationConnector Association="TransportManagementSystemModel.FK__tblProduc__Store__44FF419A" />
+        <EntityTypeShape EntityType="TransportManagementSystemModel.tblCustomer" Width="1.5" PointX="5.125" PointY="5" />
+        <EntityTypeShape EntityType="TransportManagementSystemModel.tblProduct" Width="1.5" PointX="0.75" PointY="1" />
+        <AssociationConnector Association="TransportManagementSystemModel.FK__tblProduc__Custo__22AA2996" />
+        <AssociationConnector Association="TransportManagementSystemModel.FK__tblProduc__Produ__239E4DCF" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
