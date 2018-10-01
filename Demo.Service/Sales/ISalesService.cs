@@ -5,21 +5,21 @@ using System.Text;
 using System.Threading.Tasks;
 using Demo.Model.Customers;
 using Demo.Model.Master;
-using Demo.Model.Product;
+using Demo.Model.Sales;
 
-namespace Demo.Service.Product
+namespace Demo.Service.Sales
 {
-   public interface IProductService
+   public interface ISalesService
     {
         
-        bool SaveProducts(ProductViewModel customerViewModel);
+        bool SaveSales(SalesViewModel customerViewModel);
 
         /// <summary>
         /// Update Customer information
         /// </summary>
         /// <param name="Customer"></param>        
         /// <returns></returns>
-        bool UpdateProducts(ProductViewModel ProductViewModel);
+        bool UpdateCustomers(SalesViewModel customerViewModel);
 
 
         /// <summary>
@@ -34,14 +34,9 @@ namespace Demo.Service.Product
         /// </summary>
         /// <param name="searchingParams"></param>
         /// <returns></returns>
-        List<ProductViewModel> GetAllProducts();
+        List<SalesViewModel> GetAllSalesRecord(int Id);
 
-        /// <summary>
-        /// Get all Customer for drop down (get only Id and Name)
-        /// </summary>
-        /// <param name="searchingParams"></param>
-        /// <returns></returns>
-        List<ProductViewModel> GetProductsForDropDown();
+        
 
 
         /// <summary>
@@ -49,7 +44,7 @@ namespace Demo.Service.Product
         /// </summary>
         /// <param name="Id"></param>
         /// <returns></returns>
-        ProductViewModel GetProductsDetailsById(long Id);
+        CustomersViewModel GetCustomersDetailsById(long Id);
 
         
 

@@ -104,6 +104,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Sales\SalesService.cs" />
+    <Compile Include="Sales\ISalesService.cs" />
     <Compile Include="Store\StoreService.cs" />
     <Compile Include="Store\IStoreService.cs" />
     <Compile Include="Product\ProductService.cs" />

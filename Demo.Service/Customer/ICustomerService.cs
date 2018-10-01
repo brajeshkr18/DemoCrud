@@ -41,7 +41,7 @@ namespace Demo.Service.Customer
         /// </summary>
         /// <param name="searchingParams"></param>
         /// <returns></returns>
-        List<CustomersViewModel> GetCustomersForDropDown(SearchingParams searchingParams);
+        List<CustomersViewModel> GetCustomersForDropDown();
 
 
         /// <summary>

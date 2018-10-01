@@ -74,6 +74,9 @@
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
     </Compile>
+    <Compile Include="EntityModel\GetSalesDetail_Result.cs">
+      <DependentUpon>DataEntityModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="EntityModel\tblCustomer.cs">
       <DependentUpon>DataEntityModel.tt</DependentUpon>
     </Compile>

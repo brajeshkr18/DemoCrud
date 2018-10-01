@@ -218,6 +218,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\ProductController.cs" />
+    <Compile Include="Controllers\SalesController.cs" />
     <Compile Include="Controllers\StoreController.cs" />
     <Compile Include="Controllers\CustomerController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -257,6 +258,7 @@
     <Content Include="html\build\js\AppCustom.js" />
     <Content Include="html\build\js\custom.js" />
     <Content Include="html\build\js\custom.min.js" />
+    <Content Include="html\build\js\Sales.js" />
     <Content Include="html\build\js\Product.js" />
     <Content Include="html\build\js\Customer.js" />
     <Content Include="html\build\js\Store.js" />
@@ -589,6 +591,8 @@
     <Content Include="Views\Customer\Index.cshtml" />
     <Content Include="Views\Store\Index.cshtml" />
     <Content Include="Views\Product\Index.cshtml" />
+    <Content Include="Views\Sales\Index.cshtml" />
+    <Content Include="Views\Sales\_SalesList.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Browsers\" />

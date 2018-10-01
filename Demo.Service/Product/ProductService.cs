@@ -129,7 +129,7 @@ namespace Demo.Service.Product
         /// </summary>
         /// <param name="searchingParams"></param>
         /// <returns></returns>
-        public List<ProductViewModel> GetProductsForDropDown(SearchingParams searchingParams)
+        public List<ProductViewModel> GetProductsForDropDown()
         {
             return (from customer in GetAllProducts()
                     orderby customer.Name

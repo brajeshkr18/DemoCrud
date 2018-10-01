@@ -1,0 +1,82 @@
+﻿@model List<Demo.Model.Sales.SalesViewModel>
+
+@{
+    ViewBag.Title = "Home Page";
+    Layout = null;
+}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/css/bootstrap-datetimepicker.min.css" />
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/moment.min.js"></script>
+<script src="~/Scripts/jquery-1.9.1.js"></script>
+<script src="https://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+<script src="~/Scripts/bootstrap.js"></script>
+<link href="~/Content/bootstrap.css" rel="stylesheet" />
+
+<script src="~/html/build/js/Sales.js"></script>
+<div class="container">
+    <h2>Product Record</h2>
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal" onclick="clearTextBox();">Add New Product</button><br /><br />
+    <div id="ListData">
+        @{Html.RenderPartial("_SalesList", Model);}
+    </div>
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">×</button>
+                    <h4 class="modal-title" id="myModalLabel">Add Product</h4>
+                </div>
+                <div class="modal-body">
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    @using (Html.BeginForm("MaintenanceDetails", "Maintenance", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { role = "form" }))
+                    {
+                        <div class="form-group">
+                            <label for="EmployeeId">ID</label>
+                            <input type="text" class="form-control" id="Id" placeholder="Id" disabled="disabled" />
+                        </div>
+                        <div class="form-group">
+                            <label for="Name">Customers</label>
+                            @Html.DropDownList("Customer", new SelectList(@ViewBag.Customers, "Id", "Name"), new { @Id = "ddlCustomer", @class = "form-control" })
+
+                        </div>
+                        <div class="form-group">
+                            <label for="Age">Product</label>
+                            @Html.DropDownList("Product", new SelectList(@ViewBag.Product, "Id", "Name"), new { @Id = "ddlProduct", @class = "form-control" })
+
+                        </div>
+                        <div class="form-group">
+                            <label for="Age">Stores</label>
+                            @Html.DropDownList("Stores", new SelectList(@ViewBag.Stores, "Id", "Name"), new { @Id = "ddlStores", @class = "form-control" })
+
+                        </div>
+                        <div class="form-group">
+                            <label for="Age">Date</label>
+                            <input type="text" class="form-control" id="txtDate" placeholder="Date" />
+
+                        </div>
+
+                    }
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="btnAdd" onclick="return Add();">Add</button>
+                    <button type="button" class="btn btn-primary" id="btnUpdate" style="display:none;" onclick="Update();">Update</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/js/bootstrap-datetimepicker.min.js"></script>
+
+<script>
+    $('#txtDate').datepicker({ //<-- yea .. the id was not right
+        format: "mm/dd/yy", // <-- format, not dateFormat
+        showOtherMonths: true,
+        selectOtherMonths: true,
+        autoclose: true,
+        changeMonth: true,
+        changeYear: true,
+        //gotoCurrent: true,
+        orientation: "top" // <-- and add this
+    });
+</script>

@@ -10,10 +10,11 @@ using Demo.Core.EntityModel;
 using Demo.Model.Customers;
 using Demo.Model.Master;
 using Demo.Service.Customer;
+using Demo.Model.Sales;
 
-namespace Demo.Service.Customer
+namespace Demo.Service.Sales
 {
-   public class CustomerService :ICustomerService
+   public class SalesService : ISalesService
     {
         private TransportManagementSystemEntities _Context = new TransportManagementSystemEntities();
 
@@ -27,19 +28,22 @@ namespace Demo.Service.Customer
         /// <param name="validateOnSaveEnabled"></param>
         /// <param name="mailBodyTemplate"></param>
         /// <returns></returns>
-        public bool SaveCustomers(CustomersViewModel customerViewModel)
+        public bool SaveSales(SalesViewModel salesViewModel)
         {
             bool status = false;
 
-            tblCustomer customers = new tblCustomer();
-            Mapper.Map(customerViewModel, customers);
-           
-            customers.IsActive = true;
-            customers.CreatedDate = DateTime.Now;
-            customers.ModifiedDate = DateTime.Now;
-            customers.CreatedBy = "101";
-            customers.ModifiedBy = "101";
-            _Context.tblCustomers.Add(customers);
+            tblProductSold product = new tblProductSold();
+            Mapper.Map(salesViewModel, product);
+            product.ProductId = salesViewModel.ProductId;
+            product.CustomerId = salesViewModel.CustomerId;
+            product.StoreId = salesViewModel.StoreId;
+            product.DateSold = salesViewModel.PurchasedDate;
+            product.IsActive = true;
+            product.CreatedDate = DateTime.Now;
+            product.ModifiedDate = DateTime.Now;
+            product.CreatedBy = "101";
+            product.ModifiedBy = "101";
+            _Context.tblProductSolds.Add(product);
             _Context.Configuration.ValidateOnSaveEnabled = true;
             _Context.SaveChanges();
             status = true;
@@ -55,17 +59,20 @@ namespace Demo.Service.Customer
         /// <param name="user"></param>
         /// <param name="ProfileMedia"></param>
         /// <returns></returns>
-        public bool UpdateCustomers(CustomersViewModel customerViewModel)
+        public bool UpdateCustomers(SalesViewModel salesViewModel)
         {
             bool status = false;
             try
             {
                 //var _usrsaltdetails = _Context.Users.FirstOrDefault(x => x.Id == user.Id);
-                var _customerDetails = _Context.tblCustomers.Find(customerViewModel.Id);
+                var _customerDetails = _Context.tblProductSolds.Find(salesViewModel.Id);
 
                 if (_customerDetails != null)
                 {
-                    Mapper.Map(customerViewModel, _customerDetails);
+                    Mapper.Map(salesViewModel, _customerDetails);
+                    _customerDetails.ProductId = salesViewModel.ProductId;
+                    _customerDetails.CustomerId = salesViewModel.CustomerId;
+                    _customerDetails.StoreId = salesViewModel.StoreId;
                     _customerDetails.ModifiedDate = DateTime.Now;
                     _Context.Configuration.ValidateOnSaveEnabled = false;
                     _Context.SaveChanges();
@@ -115,13 +122,13 @@ namespace Demo.Service.Customer
         /// </summary>
         /// <param name="searchingParams"></param>
         /// <returns></returns>
-        public List<CustomersViewModel> GetAllCustomer()
+        public List<SalesViewModel> GetAllSalesRecord(int Id)
         {
-            List<CustomersViewModel> entities = new List<CustomersViewModel>();
+            List<SalesViewModel> entities = new List<SalesViewModel>();
             // making values as trim  
-           
-            var list = _Context.tblCustomers.Where(x=>x.IsActive==true).ToList();
 
+            //var list = _Context.tblProductSolds.Include("tblCustomer").Include("tblProduct").Include("tblStore").Where(x=>x.IsActive==true).ToList();
+            var list = _Context.GetSalesDetail(Id).ToList();
             Mapper.Map(list, entities);
             
             return entities;
@@ -132,16 +139,7 @@ namespace Demo.Service.Customer
         /// </summary>
         /// <param name="searchingParams"></param>
         /// <returns></returns>
-        public List<CustomersViewModel> GetCustomersForDropDown()
-        {
-            return (from customer in GetAllCustomer()
-                    orderby customer.Name
-                    select new CustomersViewModel
-                    {
-                        Id = customer.Id,
-                        Name = customer.Name
-                    }).ToList();
-        }
+       
 
 
         /// <summary>

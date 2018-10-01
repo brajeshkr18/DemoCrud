@@ -1,0 +1,51 @@
+﻿@model List<Demo.Model.Sales.SalesViewModel>
+@{
+   
+}
+
+<table class="table table-bordered table-hover" id="tblmaintainance">
+    <thead>
+        <tr>
+
+            <th style="width: 5%">Customer Name.</th>
+            <th style="width: 10%">Product Name</th>
+            <th style="width: 5%">StoreName</th>
+            <th style="width: 5%">Purchase Date</th>
+
+            <th style="width: 5%" class="text-center noExl">Action</th>
+
+        </tr>
+    </thead>
+
+    <tbody>
+
+        @foreach (Demo.Model.Sales.SalesViewModel entity in Model)
+        {
+           
+        <tr>
+            <td>
+                <a>@entity.CustomerName</a>
+
+            </td>
+            <td>
+                <a>@entity.ProductName</a>
+
+            </td>
+            <td>
+                <a>@entity.StoreName</a>
+
+            </td>
+            <td>
+                <a>@entity.PurchasedDate</a>
+
+            </td>
+            
+            <td><a href="#" onclick="return getbyID(@entity.Id)">Edit</a> | <a href="#" onclick="Delele(@entity.Id)">Delete</a></td>
+
+        </tr>
+        }
+    </tbody>
+   
+
+</table>
+

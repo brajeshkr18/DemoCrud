@@ -12,6 +12,8 @@ namespace Demo.Core.EntityModel
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
+    using System.Data.Entity.Core.Objects;
+    using System.Linq;
     
     public partial class TransportManagementSystemEntities : DbContext
     {
@@ -30,5 +32,14 @@ namespace Demo.Core.EntityModel
         public virtual DbSet<tblProductSold> tblProductSolds { get; set; }
         public virtual DbSet<tblCustomer> tblCustomers { get; set; }
         public virtual DbSet<tblProduct> tblProducts { get; set; }
+    
+        public virtual ObjectResult<GetSalesDetail_Result> GetSalesDetail(Nullable<long> id)
+        {
+            var idParameter = id.HasValue ?
+                new ObjectParameter("Id", id) :
+                new ObjectParameter("Id", typeof(long));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetSalesDetail_Result>("GetSalesDetail", idParameter);
+        }
     }
 }
