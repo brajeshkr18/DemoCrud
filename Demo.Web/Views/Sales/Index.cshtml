@@ -14,8 +14,8 @@
 
 <script src="~/html/build/js/Sales.js"></script>
 <div class="container">
-    <h2>Product Record</h2>
-    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal" onclick="clearTextBox();">Add New Product</button><br /><br />
+    <h2>Sale Record</h2>
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal" onclick="clearTextBox();">Add New Sale</button><br /><br />
     <div id="ListData">
         @{Html.RenderPartial("_SalesList", Model);}
     </div>
@@ -24,7 +24,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">×</button>
-                    <h4 class="modal-title" id="myModalLabel">Add Product</h4>
+                    <h4 class="modal-title" id="myModalLabel">Add Sale</h4>
                 </div>
                 <div class="modal-body">
                     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
@@ -36,17 +36,17 @@
                         </div>
                         <div class="form-group">
                             <label for="Name">Customers</label>
-                            @Html.DropDownList("Customer", new SelectList(@ViewBag.Customers, "Id", "Name"), new { @Id = "ddlCustomer", @class = "form-control" })
+                            @Html.DropDownList("Customer", new SelectList(@ViewBag.Customers, "Id", "Name","Select Customer"), new { @Id = "ddlCustomer", @class = "form-control" })
 
                         </div>
                         <div class="form-group">
                             <label for="Age">Product</label>
-                            @Html.DropDownList("Product", new SelectList(@ViewBag.Product, "Id", "Name"), new { @Id = "ddlProduct", @class = "form-control" })
-
+                            @Html.DropDownList("Product", (SelectList)ViewBag.Product, "- Select Product -", new { @Id = "ddlProduct", @class = "form-control" }),
+                       
                         </div>
                         <div class="form-group">
                             <label for="Age">Stores</label>
-                            @Html.DropDownList("Stores", new SelectList(@ViewBag.Stores, "Id", "Name"), new { @Id = "ddlStores", @class = "form-control" })
+                            @Html.DropDownList("Stores", new SelectList(@ViewBag.Stores, "Id", "Name", "Select Stores"), new { @Id = "ddlStores", @class = "form-control" })
 
                         </div>
                         <div class="form-group">

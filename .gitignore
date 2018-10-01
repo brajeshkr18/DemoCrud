@@ -3,3 +3,9 @@
 ################################################################################
 
 /.vs/Demo/v15
+/Demo.Core/bin/Debug
+/Demo.Core/obj/Debug
+/Demo.Service
+/Demo.Model
+/Demo.Web/bin
+/Demo.Web/obj/Debug

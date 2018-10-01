@@ -34,10 +34,10 @@ function loadData() {
 
 //Add Data Function   
 function Add() {
-    //var res = validate();
-    //if (res == false) {
-    //    return false;
-    //}
+    var res = validate();
+    if (res == false) {
+        return false;
+    }
     var objsales = {
         Id: $('#Id').val(),
         ProductId: $('#ddlProduct').val(),
@@ -68,7 +68,7 @@ function Add() {
 //Function for getting the Data Based upon Employee ID  
 function getbyID(EmpID) {
     $('#Name').css('border-color', 'lightgrey');
-    $('#Age').css('border-color', 'lightgrey');
+    //$('#Age').css('border-color', 'lightgrey');
 
     $.ajax({
         url: "../Sales/GetbyID/" + EmpID,
@@ -76,11 +76,11 @@ function getbyID(EmpID) {
         contentType: "application/json;charset=UTF-8",
         dataType: "json",
         success: function (result) {
-            $('#Id').val(result.Id);
-            $('#ddlProduct').val(result.ProductId);
-            $('#ddlCustomer').val(result.CustomerId);
-            $('#ddlStores').val(result.StoreId);
-            $('#txtDate').val(result.PurchasedDate);
+            $('#Id').val(result[0].Id);
+            $('#ddlProduct').val(result[0].ProductId);
+            $('#ddlCustomer').val(result[0].CustomerId);
+            $('#ddlStores').val(result[0].StoreId);
+            $('#txtDate').val(result[0].PurchasedDate);
             $('#myModal').modal('show');
             $('#btnUpdate').show();
             $('#btnAdd').hide();
@@ -163,20 +163,20 @@ function clearTextBox() {
 //Valdidation using jquery  
 function validate() {
     var isValid = true;
-    //if ($('#Name').val().trim() == "") {
-    //    $('#Name').css('border-color', 'Red');
-    //    isValid = false;
-    //}
-    //else {
-    //    $('#Name').css('border-color', 'lightgrey');
-    //}
-    //if ($('#Age').val().trim() == "") {
-    //    $('#Age').css('border-color', 'Red');
-    //    isValid = false;
-    //}
-    //else {
-    //    $('#Age').css('border-color', 'lightgrey');
-    //}
+    if ($('#txtDate').val().trim() == "") {
+        $('#txtDate').css('border-color', 'Red');
+        isValid = false;
+    }
+    else {
+        $('#txtDate').css('border-color', 'lightgrey');
+    }
+    if ($("ddlProduct").val() == undefined || $("ddlProduct").val() == "") {
+        $('#ddlProduct').css('border-color', 'Red');
+        isValid = false;
+    }
+    else {
+        $('#ddlProduct').css('border-color', 'lightgrey');
+    }
     //if ($('#Address').val().trim() == "") {
     //    $('#Address').css('border-color', 'Red');
     //    isValid = false;

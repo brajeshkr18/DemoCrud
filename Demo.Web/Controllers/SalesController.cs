@@ -22,8 +22,9 @@ namespace Demo.Web.Controllers
         {
             List<SalesViewModel> lst = new List<SalesViewModel>();
             //SalesViewModel objSales = new SalesViewModel();
-          lst = _objSales.GetAllSalesRecord(0);
-            ViewBag.Product = _objProduct.GetProductsForDropDown();
+             lst = _objSales.GetAllSalesRecord(0);
+            ViewBag.Product = new SelectList(_objProduct.GetProductsForDropDown(), "Id", "Name", 0);
+            //ViewBag.Product = _objProduct.GetProductsForDropDown();
             ViewBag.Customers = _objcustomer.GetCustomersForDropDown();
             ViewBag.Stores = _objStore.GetStoresForDropDown();
             return View(lst);
