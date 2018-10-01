@@ -105,14 +105,14 @@ function Update() {
         Address: $('#Address').val()
     };
     $.ajax({
-        url: "/Customer/Update",
+        url: "/Sales/Update",
         data: JSON.stringify(empObj),
         type: "POST",
         contentType: "application/json;charset=utf-8",
         dataType: "json",
         success: function (result) {
             console.log(result)
-            loadData();
+            //loadData();
             $('#myModal').modal('hide');
             $('#EmployeeID').val("");
             $('#Name').val("");
@@ -132,7 +132,7 @@ function Delele(ID) {
     var ans = confirm("Are you sure you want to delete this Record?");
     if (ans) {
         $.ajax({
-            url: "/Customer/Delete/" + ID,
+            url: "/Sales/Delete/" + ID,
             type: "POST",
             contentType: "application/json;charset=UTF-8",
             dataType: "json",
@@ -148,17 +148,17 @@ function Delele(ID) {
 
 //Function for clearing the textboxes  
 function clearTextBox() {
-    $('#EmployeeID').val("");
-    $('#Name').val("");
-    $('#Age').val("");
-    $('#State').val("");
-    $('#Country').val("");
-    $('#btnUpdate').hide();
-    $('#btnAdd').show();
-    $('#Name').css('border-color', 'lightgrey');
-    $('#Age').css('border-color', 'lightgrey');
-    $('#State').css('border-color', 'lightgrey');
-    $('#Country').css('border-color', 'lightgrey');
+    //$('#EmployeeID').val("");
+    //$('#Name').val("");
+    //$('#Age').val("");
+    //$('#State').val("");
+    //$('#Country').val("");
+    //$('#btnUpdate').hide();
+    //$('#btnAdd').show();
+    //$('#Name').css('border-color', 'lightgrey');
+    //$('#Age').css('border-color', 'lightgrey');
+    //$('#State').css('border-color', 'lightgrey');
+    //$('#Country').css('border-color', 'lightgrey');
 }
 //Valdidation using jquery  
 function validate() {
