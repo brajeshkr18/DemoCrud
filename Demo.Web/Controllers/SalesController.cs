@@ -17,7 +17,7 @@ namespace Demo.Web.Controllers
         IProductService _objProduct = new ProductService();
         ICustomerService _objcustomer = new CustomerService();
         IStoreService _objStore = new StoreService();
-        ISalesService _objSales = new SalesService();
+        SalesService _objSales = new SalesService();
         public ActionResult Index()
         {
             List<SalesViewModel> lst = new List<SalesViewModel>();
@@ -36,6 +36,10 @@ namespace Demo.Web.Controllers
         public JsonResult GetbyID(int ID)
         {
             return Json(_objSales.GetAllSalesRecord(ID), JsonRequestBehavior.AllowGet);
+        }
+        public JsonResult FetchProducts(int provinceId) // its a GET, not a POST
+        {
+            return Json(_objProduct.GetProductsForDropDown(), JsonRequestBehavior.AllowGet);
         }
     }
 }

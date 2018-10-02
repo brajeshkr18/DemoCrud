@@ -131,12 +131,12 @@ namespace Demo.Service.Product
         /// <returns></returns>
         public List<ProductViewModel> GetProductsForDropDown()
         {
-            return (from customer in GetAllProducts()
-                    orderby customer.Name
+            return (from c in GetAllProducts()
+                    orderby c.Name
                     select new ProductViewModel
                     {
-                        Id = customer.Id,
-                        Name = customer.Name
+                        Id = c.Id,
+                        Name = c.Name
                     }).ToList();
         }
 

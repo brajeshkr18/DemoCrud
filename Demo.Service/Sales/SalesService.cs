@@ -14,7 +14,7 @@ using Demo.Model.Sales;
 
 namespace Demo.Service.Sales
 {
-   public class SalesService : ISalesService
+   public class SalesService 
     {
         private TransportManagementSystemEntities _Context = new TransportManagementSystemEntities();
 
@@ -129,6 +129,15 @@ namespace Demo.Service.Sales
 
             //var list = _Context.tblProductSolds.Include("tblCustomer").Include("tblProduct").Include("tblStore").Where(x=>x.IsActive==true).ToList();
             var list = _Context.GetSalesDetail(Id).ToList();
+
+            //var i = from c in _Context.tblProductSolds
+            //                    join
+            //var query =
+            //from sale in _Context.tblProductSolds
+            //join cus in _Context.tblCustomers on sale.CustomerId equals cus.id
+           
+            //select new { Post = sale, Meta = cus };
+
             Mapper.Map(list, entities);
             
             return entities;
