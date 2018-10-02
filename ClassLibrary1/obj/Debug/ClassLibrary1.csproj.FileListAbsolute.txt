@@ -1,0 +1,5 @@
+E:\DemoCrud\ClassLibrary1\obj\Debug\ClassLibrary1.csproj.CoreCompileInputs.cache
+E:\DemoCrud\ClassLibrary1\bin\Debug\Utlity.dll
+E:\DemoCrud\ClassLibrary1\bin\Debug\Utlity.pdb
+E:\DemoCrud\ClassLibrary1\obj\Debug\Utlity.dll
+E:\DemoCrud\ClassLibrary1\obj\Debug\Utlity.pdb

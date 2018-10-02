@@ -609,10 +609,6 @@
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Demo.Core\Demo.Core.csproj">
-      <Project>{267aac19-34be-4e2d-a821-177b72bf01db}</Project>
-      <Name>Demo.Core</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Demo.Model\Demo.Model.csproj">
       <Project>{054ca61f-6657-4e84-813e-159d45e17c16}</Project>
       <Name>Demo.Model</Name>
