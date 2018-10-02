@@ -234,3 +234,40 @@ USE [master]
 GO
 ALTER DATABASE [Demo] SET  READ_WRITE
 GO
+
+
+USE [Demo]
+GO
+/****** Object:  StoredProcedure [dbo].[GetSalesDetail]    Script Date: 02-10-2018 13:05:58 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+Create PROCEDURE [dbo].[GetSalesDetail] --102
+ @Id BIGINT = 0
+AS
+BEGIN
+
+	SET NOCOUNT ON;
+
+	BEGIN
+	select PS.Id as Id,CONVERT(datetime, PS.DateSold,101) as PurchasedDate, c.Name as CustomerName , c.Id as CustomerId,P.Name as ProductName,
+	P.Id as ProductId,S.Name as StoreName ,S.Id as StoreId
+	from tblProductSold  PS  inner join tblCustomer c on PS.CustomerId =C.Id
+	inner join tblProduct P on PS.ProductId = P.Id
+	inner join tblStore S on PS.StoreId =S.Id
+	where PS.IsActive =1 and   Ps.Id = @Id
+      OR ISNULL(@Id, '') = ''
+
+	END
+
+END
+
+
+
+
+
+
+
+
